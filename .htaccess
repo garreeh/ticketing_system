@@ -1,0 +1,6 @@
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?example.com [NC]
+RewriteRule \.(pdf|zip|txt|pcb|bin|rar|7z|rom)$ - [NC,F,L]
+
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^ %{REQUEST_URI}.php [NC,L]
