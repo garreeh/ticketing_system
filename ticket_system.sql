@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2023 at 11:13 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Dec 28, 2023 at 03:52 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,23 +24,26 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `admin_tickets`
 --
 
-CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL,
-  `user_email` varchar(255) NOT NULL,
-  `user_name` varchar(255) NOT NULL DEFAULT '',
-  `user_password` varchar(255) NOT NULL
+CREATE TABLE `admin_tickets` (
+  `admin_id` int(11) NOT NULL,
+  `admin_email` varchar(255) NOT NULL,
+  `admin_username` varchar(255) NOT NULL DEFAULT '',
+  `admin_password` varchar(255) NOT NULL,
+  `admin_confirm_password` varchar(255) NOT NULL,
+  `remember_me` varchar(255) DEFAULT NULL,
+  `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `admin_tickets`
 --
 
-INSERT INTO `users` (`user_id`, `user_email`, `user_name`, `user_password`) VALUES
-(1, 'gajultos.garry123@gmail.com', 'garry', '$2y$10$jrx1cQWQZqI2dJO5blQr6uOgVFcG.0hyXdW4nLvfdvgspuMfYnoz2'),
-(3, 'gars', 'gars', '$2y$10$FtSRe1cK29SpZ5w4KosNRe4Ubb/K0YUydvH1tLOEuAluwYYrsubOa');
+INSERT INTO `admin_tickets` (`admin_id`, `admin_email`, `admin_username`, `admin_password`, `admin_confirm_password`, `remember_me`, `created_at`) VALUES
+(5, 'gajultos.garry123@gmail.com', 'garry', '$2y$10$gBl8wgPR1V03P8H6xPj.rORqjzpJ34Sb2iR2YtH1cqb1r/u6KYhjG', '09072131944', NULL, '2023-12-28 22:09:16'),
+(7, 'testemail@gmail.com', 'test', '$2y$10$jX4y4u2kbpPalDZLdZWoMe2D.XwX/Po28o3LvMRVH2hvVgiBvRYK2', 'test', NULL, '2023-12-28 22:52:10');
 
 -- --------------------------------------------------------
 
@@ -102,10 +105,10 @@ INSERT INTO `z_user` (`user_id`, `user_firstname`, `user_lastname`, `user_contac
 --
 
 --
--- Indexes for table `users`
+-- Indexes for table `admin_tickets`
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
+ALTER TABLE `admin_tickets`
+  ADD PRIMARY KEY (`admin_id`);
 
 --
 -- Indexes for table `z_user`
@@ -118,10 +121,10 @@ ALTER TABLE `z_user`
 --
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `admin_tickets`
 --
-ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `admin_tickets`
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `z_user`

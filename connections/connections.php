@@ -1,26 +1,26 @@
 <?php
 
 $servername = "localhost";
-$username   = "root";
-$password   = "";
-$dbname     = "ticket_system";
+$username = "root";
+$password = "";
+$dbname = "ticket_system";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
-    
+
 // Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-}else{
-// echo "SUCCESS";
+} else {
+    // echo "SUCCESS";
 }
 
 // This is live connection
 
 // $servername = "localhost";
-// $username   = "vssphcom_vetsolK";
-// $password   = "GreatCoal081677!!";
-// $dbname     = "vssphcom_vetsol_kal";
+// $username = "vssphcom_vetsolK";
+// $password = "GreatCoal081677!!";
+// $dbname = "vssphcom_vetsol_kal";
 
 // // Create connection
 // $conn = new mysqli($servername, $username, $password, $dbname);
@@ -28,8 +28,8 @@ if ($conn->connect_error) {
 // // Check connection
 // if ($conn->connect_error) {
 //     die("Connection failed: " . $conn->connect_error);
-// }else{
-// // echo "SUCCESS";
+// } else {
+//     // echo "SUCCESS";
 // }
 
 ?>

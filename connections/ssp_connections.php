@@ -1,8 +1,8 @@
-<?php 
+<?php
 $sql_details = array(
     'user' => 'root',
     'pass' => '',
-    'db'   => 'vssphcom_vetsol_kal',
+    'db' => 'vssphcom_vetsol_kal',
     'host' => 'localhost'
 );
 
@@ -11,7 +11,7 @@ $sql_details = array(
 // $sql_details = array(
 //     'user' => 'vssphcom_vetsolK',
 //     'pass' => 'GreatCoal081677!!',
-//     'db'   => 'vssphcom_vetsol_kal',
+//     'db' => 'vssphcom_vetsol_kal',
 //     'host' => 'localhost'
 // );
 

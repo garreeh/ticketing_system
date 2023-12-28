@@ -1,12 +1,12 @@
 <?php
-include './../../connection/connect.php';
+include './../../connections/connections.php';
 
 if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
 
-if (!isset($_SESSION['client_id'])) {
-  header("Location: /blut_medical/index.php");
+if (!isset($_SESSION['user_id'])) {
+  header("Location: /ticketing_system/index.php");
   exit();
 }
 ?>

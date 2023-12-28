@@ -5,13 +5,11 @@ if (session_status() == PHP_SESSION_NONE) {
 	session_start();
 }
 
-if (isset($_SESSION['user_id'])) {
+if (isset($_SESSION['admin_id'])) {
 	header("Location: /ticketing_system/views/admin/admin_dashboard.php");
 	exit();
 }
 ?>
-<S></S>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +56,7 @@ if (isset($_SESSION['user_id'])) {
 										<h1 class="h4 text-gray-900 mb-4">Help Desk | Admin Login</h1>
 									</div>
 
-									<form class="user" id="loginForm">
+									<form class="user" id="loginForm" onsubmit="submitForm(); return false;">
 										<div class="form-group">
 											<input type="text" class="form-control form-control-user" placeholder="Enter Email | Username"
 												name="username_or_email" id="username_or_email" value="" required>
@@ -67,7 +65,7 @@ if (isset($_SESSION['user_id'])) {
 										<div class="form-group">
 											<div class="input-group">
 												<input type="password" class="form-control form-control-user" placeholder="Password"
-													name="user_password" id="user_password" required>
+													name="admin_password" id="admin_password" required>
 												<div class="input-group-append">
 													<span class="input-group-text" id="togglePassword">
 														<i class="fa fa-eye" aria-hidden="true"></i>
@@ -78,18 +76,21 @@ if (isset($_SESSION['user_id'])) {
 
 										<div class="form-group">
 											<div class="custom-control custom-checkbox small">
-												<input type="checkbox" class="custom-control-input" id="customCheck">
-												<label class="custom-control-label" for="customCheck">Remember
-													Me</label>
+												<input type="checkbox" class="custom-control-input" id="customCheck"
+													onchange="toggleRememberMe()">
+												<label class="custom-control-label" for="customCheck">Remember Me</label>
 											</div>
+
+											<input type="hidden" id="remember_me" name="remember_me" value="0">
 										</div>
+
 										<button type="button" class="btn btn-primary btn-user btn-block"
 											onclick="submitForm()">Login</button>
 										<hr>
 									</form>
 
 									<div class="text-center">
-										<a class="small" href="forgot-password.html">Forgot Password?</a>
+										<a class="small" href="./views/admin/admin_forgot_password.php">Forgot Password?</a>
 									</div>
 								</div>
 							</div>
@@ -125,9 +126,14 @@ if (isset($_SESSION['user_id'])) {
 			var icon = document.querySelector('#togglePassword i');
 			icon.classList.toggle('fa-eye-slash');
 		});
-
 	});
 
+
+	document.getElementById('loginForm').addEventListener('keydown', function (e) {
+		if (e.key === 'Enter') {
+			submitForm();
+		}
+	});
 	// KABOBOHAN SA TOAST
 	function showToast(message) {
 		Toastify({
@@ -140,19 +146,33 @@ if (isset($_SESSION['user_id'])) {
 		}).showToast();
 	}
 
+	function toggleRememberMe() {
+		var rememberMeCheckbox = document.getElementById('customCheck');
+		var rememberMeInput = document.getElementById('remember_me');
+
+		// Check if rememberMeInput is not null
+		if (rememberMeInput !== null) {
+			rememberMeInput.value = rememberMeCheckbox.checked ? "1" : "0";
+		}
+
+		console.log(rememberMeInput);
+	}
+
+
 	function submitForm() {
 		// Get form data
 		var usernameOrEmail = document.getElementById('username_or_email').value;
-		var user_password = document.getElementById('user_password').value;
+		var admin_password = document.getElementById('admin_password').value;
+		var rememberMe = document.getElementById('remember_me').value;
 
 		// Create a new FormData object
 		var formData = new FormData();
 		formData.append('username_or_email', usernameOrEmail);
-		formData.append('user_password', user_password);
-
+		formData.append('admin_password', admin_password);
+		formData.append('remember_me', rememberMe);
 		// Create and configure an XMLHttpRequest object
 		var xhr = new XMLHttpRequest();
-		xhr.open('POST', './controllers/user_login_process.php', true);
+		xhr.open('POST', './controllers/admin_login_process.php', true);
 
 		xhr.onload = function () {
 
@@ -176,8 +196,8 @@ if (isset($_SESSION['user_id'])) {
 
 		// Send the FormData object with the POST request
 		xhr.send(formData);
-
 	}
+
 </script>
 
 <style>
