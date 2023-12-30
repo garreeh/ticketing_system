@@ -128,7 +128,6 @@ if (isset($_SESSION['admin_id'])) {
 		});
 	});
 
-
 	document.getElementById('loginForm').addEventListener('keydown', function (e) {
 		if (e.key === 'Enter') {
 			submitForm();

@@ -14,7 +14,7 @@ if (isset($_POST['username_or_email'], $_POST['admin_password'])) {
     $condition = "`admin_username`='$usernameOrEmail'";
   }
 
-  $query = "SELECT * FROM `admin_tickets` WHERE $condition";
+  $query = "SELECT * FROM `admin_user` WHERE $condition";
   $result = mysqli_query($conn, $query);
 
   if ($result) {
@@ -25,6 +25,7 @@ if (isset($_POST['username_or_email'], $_POST['admin_password'])) {
       if ($admin_password == $row["admin_confirm_password"]) {
         // Password is correct, set session variables
         $_SESSION['admin_id'] = $row['admin_id'];
+        $_SESSION['admin_fullname'] = $row['admin_fullname'];
         $_SESSION['admin_email'] = $row['admin_email'];
         $_SESSION['admin_username'] = $row['admin_username'];
         // Return a success message
@@ -39,7 +40,7 @@ if (isset($_POST['username_or_email'], $_POST['admin_password'])) {
           $hashedToken = password_hash($token, PASSWORD_DEFAULT);
 
           // Update the token in the database for the user
-          $updateQuery = "UPDATE `admin_tickets` SET `remember_me`='$hashedToken' WHERE `admin_id`={$row['admin_id']}";
+          $updateQuery = "UPDATE `admin_user` SET `remember_me`='$hashedToken' WHERE `admin_id`={$row['admin_id']}";
           $updateResult = mysqli_query($conn, $updateQuery);
 
           if (!$updateResult) {

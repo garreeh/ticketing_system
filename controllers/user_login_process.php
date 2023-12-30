@@ -26,6 +26,9 @@ if (isset($_POST['username_or_email'], $_POST['user_password'])) {
                 $_SESSION['user_id'] = $row['user_id'];
                 $_SESSION['user_email'] = $row['user_email'];
                 $_SESSION['user_name'] = $row['user_name'];
+                $_SESSION['user_firstname'] = $row['user_firstname'];
+                $_SESSION['user_lastname'] = $row['user_lastname'];
+
                 // Return a success message
                 echo json_encode(['success' => true]);
                 exit();
