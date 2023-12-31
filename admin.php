@@ -120,7 +120,7 @@ if (isset($_SESSION['admin_id'])) {
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
 		document.getElementById('togglePassword').addEventListener('click', function () {
-			var passwordInput = document.getElementById('user_password');
+			var passwordInput = document.getElementById('admin_password');
 			var type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
 			passwordInput.setAttribute('type', type);
 			var icon = document.querySelector('#togglePassword i');

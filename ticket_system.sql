@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2023 at 03:52 PM
+-- Generation Time: Dec 31, 2023 at 05:50 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -24,11 +24,12 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin_tickets`
+-- Table structure for table `admin_user`
 --
 
-CREATE TABLE `admin_tickets` (
+CREATE TABLE `admin_user` (
   `admin_id` int(11) NOT NULL,
+  `admin_fullname` varchar(255) DEFAULT NULL,
   `admin_email` varchar(255) NOT NULL,
   `admin_username` varchar(255) NOT NULL DEFAULT '',
   `admin_password` varchar(255) NOT NULL,
@@ -38,12 +39,40 @@ CREATE TABLE `admin_tickets` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `admin_tickets`
+-- Dumping data for table `admin_user`
 --
 
-INSERT INTO `admin_tickets` (`admin_id`, `admin_email`, `admin_username`, `admin_password`, `admin_confirm_password`, `remember_me`, `created_at`) VALUES
-(5, 'gajultos.garry123@gmail.com', 'garry', '$2y$10$gBl8wgPR1V03P8H6xPj.rORqjzpJ34Sb2iR2YtH1cqb1r/u6KYhjG', '09072131944', NULL, '2023-12-28 22:09:16'),
-(7, 'testemail@gmail.com', 'test', '$2y$10$jX4y4u2kbpPalDZLdZWoMe2D.XwX/Po28o3LvMRVH2hvVgiBvRYK2', 'test', NULL, '2023-12-28 22:52:10');
+INSERT INTO `admin_user` (`admin_id`, `admin_fullname`, `admin_email`, `admin_username`, `admin_password`, `admin_confirm_password`, `remember_me`, `created_at`) VALUES
+(5, 'Garry Gajultos', 'gajultos.garry123@gmail.com', 'garry', '$2y$10$MB2KTayKcQmLWqEPb1HD0.8GCiSLvf0tnnxGMmxPKPPR.aqwUzC/a', 'FD4MOjssMn', NULL, '2023-12-28 22:09:16'),
+(7, 'Bert Dela Cruz', 'testemail@gmail.com', 'test', '$2y$10$jX4y4u2kbpPalDZLdZWoMe2D.XwX/Po28o3LvMRVH2hvVgiBvRYK2', 'test', NULL, '2023-12-28 22:52:10');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tickets`
+--
+
+CREATE TABLE `tickets` (
+  `ticket_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `ticket_number` varchar(255) DEFAULT NULL,
+  `ticket_category` enum('Software','Hardware') DEFAULT NULL,
+  `ticket_description` text DEFAULT NULL,
+  `ticket_priority` enum('Normal','Priority','Urgent') DEFAULT NULL,
+  `ticket_status` enum('Pending','Closed') DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tickets`
+--
+
+INSERT INTO `tickets` (`ticket_id`, `user_id`, `ticket_number`, `ticket_category`, `ticket_description`, `ticket_priority`, `ticket_status`, `created_at`) VALUES
+(23, 123, '565135', 'Software', '2', 'Normal', 'Pending', '2023-12-30 15:50:19'),
+(24, 123, '497488', 'Hardware', '2323', 'Priority', 'Pending', '2023-12-30 15:50:26'),
+(25, 123, '086180', 'Software', '2323', 'Urgent', 'Pending', '2023-12-30 15:50:34'),
+(26, 123, '150274', 'Software', '2323', 'Urgent', 'Pending', '2023-12-30 15:51:14'),
+(29, 2, '898804', 'Hardware', 'test', 'Priority', 'Pending', '2023-12-31 03:54:23');
 
 -- --------------------------------------------------------
 
@@ -105,10 +134,17 @@ INSERT INTO `z_user` (`user_id`, `user_firstname`, `user_lastname`, `user_contac
 --
 
 --
--- Indexes for table `admin_tickets`
+-- Indexes for table `admin_user`
 --
-ALTER TABLE `admin_tickets`
+ALTER TABLE `admin_user`
   ADD PRIMARY KEY (`admin_id`);
+
+--
+-- Indexes for table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`ticket_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `z_user`
@@ -121,16 +157,32 @@ ALTER TABLE `z_user`
 --
 
 --
--- AUTO_INCREMENT for table `admin_tickets`
+-- AUTO_INCREMENT for table `admin_user`
 --
-ALTER TABLE `admin_tickets`
+ALTER TABLE `admin_user`
   MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `tickets`
+--
+ALTER TABLE `tickets`
+  MODIFY `ticket_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `z_user`
 --
 ALTER TABLE `z_user`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=253;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `z_user` (`user_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

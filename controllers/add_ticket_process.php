@@ -36,9 +36,16 @@ if (isset($_POST['add_tickets'])) {
 }
 
 // Fetch all tickets for the specific user
-$ticketSql = "SELECT * FROM `tickets` WHERE user_id = '$user_id' AND ticket_status = 'Pending'";
-$ticketResult = $conn->query($ticketSql);
+$ticket_for_specific_users = "SELECT * FROM `tickets` WHERE user_id = '$user_id' AND ticket_status = 'Pending'";
 
-// Get the length of the ticket list
-$activeTicketsCount = ($ticketResult) ? $ticketResult->num_rows : 0;
+$ticket_result_specific_users = $conn->query($ticket_for_specific_users);
+// Get the length of the ticket list for Users
+$activeTicketsCount = ($ticket_result_specific_users) ? $ticket_result_specific_users->num_rows : 0;
+
+
+// Fetch all tickets for the admin to view
+$ticket_for_admin = "SELECT * FROM `tickets` WHERE ticket_status = 'Pending'";
+$ticket_result_admin = $conn->query($ticket_for_admin);
+$activeTicketsCountAdmin = ($ticket_result_admin) ? $ticket_result_admin->num_rows : 0;
+
 ?>

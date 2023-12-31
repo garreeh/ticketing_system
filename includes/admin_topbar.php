@@ -6,7 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION['admin_id'])) {
-  header("Location: /ticketing_system/index.php");
+  header("Location: /ticketing_system/admin.php");
   exit();
 }
 ?>
@@ -19,6 +19,6 @@ if (!isset($_SESSION['admin_id'])) {
 
   <!-- Topbar Search -->
   <h1 class="h3 mb-0 text-gray-800">
-    <?php echo $_SESSION['admin_fullname']; ?>
+    <?php echo "Admin: " . $_SESSION['admin_fullname']; ?>
   </h1>
 </nav>

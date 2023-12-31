@@ -53,13 +53,13 @@ if (!isset($_SESSION['admin_id'])) {
       Manage Tickets
     </div>
     <li class="nav-item">
-      <a class="nav-link" href="/blut_medical/views/admin/admin_add_products.php">
+      <a class="nav-link" href="/ticketing_system/views/admin/admin_view_tickets.php">
         <i class="fas fa-fw fa-clipboard-list"></i>
         <span>Manage Active Tickets</span></a>
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" href="/blut_medical/views/admin/admin_add_products.php">
+      <a class="nav-link" href="/ticketing_system/views/admin/admin_closed_tickets.php">
         <i class="fas fa-fw fa-wrench"></i>
         <span>Closed Tickets</span></a>
     </li>
