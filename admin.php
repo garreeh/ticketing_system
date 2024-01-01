@@ -91,6 +91,8 @@ if (isset($_SESSION['admin_id'])) {
 
 									<div class="text-center">
 										<a class="small" href="./views/admin/admin_forgot_password.php">Forgot Password?</a>
+										</br>
+										<a class="small" href="/ticketing_system/index.php">Go to User Login</a>
 									</div>
 								</div>
 							</div>

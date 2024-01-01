@@ -63,6 +63,31 @@ if (!isset($_SESSION['admin_id'])) {
         <i class="fas fa-fw fa-wrench"></i>
         <span>Closed Tickets</span></a>
     </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+      Ticket Settings
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+        aria-controls="collapseTwo">
+        <i class="fas fa-fw fa-cart-plus"></i>
+        <span>Ticket Setup</span>
+      </a>
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">Setup:</h6>
+          <a class="collapse-item" href="/ticketing_system/views/admin/admin_ticket_category.php">Ticket Category</a>
+          <!-- <a class="collapse-item" href="/blut_medical/views/admin/admin_add_products.php">Add Products</a> -->
+        </div>
+      </div>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider">
 

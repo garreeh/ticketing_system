@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 31, 2023 at 05:50 AM
+-- Generation Time: Jan 01, 2024 at 10:41 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -56,7 +56,7 @@ CREATE TABLE `tickets` (
   `ticket_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `ticket_number` varchar(255) DEFAULT NULL,
-  `ticket_category` enum('Software','Hardware') DEFAULT NULL,
+  `ticket_category` varchar(255) DEFAULT NULL,
   `ticket_description` text DEFAULT NULL,
   `ticket_priority` enum('Normal','Priority','Urgent') DEFAULT NULL,
   `ticket_status` enum('Pending','Closed') DEFAULT NULL,
@@ -68,11 +68,28 @@ CREATE TABLE `tickets` (
 --
 
 INSERT INTO `tickets` (`ticket_id`, `user_id`, `ticket_number`, `ticket_category`, `ticket_description`, `ticket_priority`, `ticket_status`, `created_at`) VALUES
-(23, 123, '565135', 'Software', '2', 'Normal', 'Pending', '2023-12-30 15:50:19'),
-(24, 123, '497488', 'Hardware', '2323', 'Priority', 'Pending', '2023-12-30 15:50:26'),
-(25, 123, '086180', 'Software', '2323', 'Urgent', 'Pending', '2023-12-30 15:50:34'),
-(26, 123, '150274', 'Software', '2323', 'Urgent', 'Pending', '2023-12-30 15:51:14'),
-(29, 2, '898804', 'Hardware', 'test', 'Priority', 'Pending', '2023-12-31 03:54:23');
+(33, 123, '517124', 'Hardware', 'test', 'Normal', 'Pending', '2024-01-01 09:39:12'),
+(34, 123, '475833', 'Software', 'testset', 'Urgent', 'Pending', '2024-01-01 09:39:20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket_category`
+--
+
+CREATE TABLE `ticket_category` (
+  `ticket_category_id` int(11) NOT NULL,
+  `ticket_category` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ticket_category`
+--
+
+INSERT INTO `ticket_category` (`ticket_category_id`, `ticket_category`, `created_at`) VALUES
+(1, 'Hardware', '2024-01-01 09:37:36'),
+(2, 'Software', '2024-01-01 09:37:40');
 
 -- --------------------------------------------------------
 
@@ -147,6 +164,12 @@ ALTER TABLE `tickets`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `ticket_category`
+--
+ALTER TABLE `ticket_category`
+  ADD PRIMARY KEY (`ticket_category_id`);
+
+--
 -- Indexes for table `z_user`
 --
 ALTER TABLE `z_user`
@@ -166,7 +189,13 @@ ALTER TABLE `admin_user`
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `ticket_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `ticket_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT for table `ticket_category`
+--
+ALTER TABLE `ticket_category`
+  MODIFY `ticket_category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `z_user`

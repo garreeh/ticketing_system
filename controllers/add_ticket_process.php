@@ -13,27 +13,39 @@ $user_id = $_SESSION['user_id'];
 if (isset($_POST['add_tickets'])) {
 
     // Get form data
-    $ticket_category = $conn->real_escape_string($_POST['ticket_category']);
+    $ticket_category_id = $conn->real_escape_string($_POST['ticket_category']);
     $ticket_description = $conn->real_escape_string($_POST['ticket_description']);
     $ticket_priority = $conn->real_escape_string($_POST['ticket_priority']);
-  
+
     // Generate ticket number
     $ticket_number = str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT);
 
     // Set default status
     $ticket_status = 'Pending';
 
-    // Construct SQL query
-    $sql = "INSERT INTO `tickets` (user_id, ticket_number, ticket_category, ticket_description, ticket_priority, ticket_status)
-  VALUES ('$user_id', '$ticket_number', '$ticket_category', '$ticket_description', '$ticket_priority', '$ticket_status')";
+    // Fetch ticket category name from the ticket_category table
+    $category_query = "SELECT ticket_category FROM ticket_category WHERE ticket_category = '$ticket_category_id'";
+    $category_result = mysqli_query($conn, $category_query);
 
-    // Execute SQL query
-    if (mysqli_query($conn, $sql)) {
-        header("Location: /ticketing_system/views/users/users_tickets.php");
+    if ($category_result) {
+        $category_row = mysqli_fetch_assoc($category_result);
+        $ticket_category = $category_row['ticket_category'];
+
+        // Construct SQL query
+        $sql = "INSERT INTO `tickets` (user_id, ticket_number, ticket_category, ticket_description, ticket_priority, ticket_status)
+                VALUES ('$user_id', '$ticket_number', '$ticket_category', '$ticket_description', '$ticket_priority', '$ticket_status')";
+
+        // Execute SQL query
+        if (mysqli_query($conn, $sql)) {
+            header("Location: /ticketing_system/views/users/users_tickets.php");
+        } else {
+            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        }
     } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        echo "Error fetching ticket category: " . mysqli_error($conn);
     }
 }
+
 
 // Fetch all tickets for the specific user
 $ticket_for_specific_users = "SELECT * FROM `tickets` WHERE user_id = '$user_id' AND ticket_status = 'Pending'";

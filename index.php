@@ -87,6 +87,9 @@ if (isset($_SESSION['user_id'])) {
 
 									<div class="text-center">
 										<a class="small" href="forgot-password.html">Forgot Password? Contact Us</a>
+										</br>
+										<a class="small" href="/ticketing_system/admin.php">Go to Admin Login</a>
+
 									</div>
 								</div>
 							</div>

@@ -2,6 +2,7 @@
 include './../../connections/connections.php';
 include './../../controllers/add_ticket_process.php';
 
+
 if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
@@ -60,8 +61,15 @@ if (!isset($_SESSION['user_id'])) {
               <div class="form-group">
                 <label for="ticket_category">Ticket Category:</label>
                 <select class="form-control" id="ticket_category" name="ticket_category" required>
-                  <option value="Software">Software</option>
-                  <option value="Hardware">Hardware</option>
+                  <?php
+                  require_once './../../connections/connections.php';
+
+                  $sql = "SELECT * FROM ticket_category";
+                  $result = $conn->query($sql);
+                  while ($row = $result->fetch_array()) {
+                    echo "<option value=\"" . htmlspecialchars($row['ticket_category']) . "\"> " . htmlspecialchars($row['ticket_category']) . "</option>";
+                  }
+                  ?>
                 </select>
               </div>
 
