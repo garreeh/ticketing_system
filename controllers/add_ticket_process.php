@@ -16,12 +16,36 @@ if (isset($_POST['add_tickets'])) {
     $ticket_category_id = $conn->real_escape_string($_POST['ticket_category']);
     $ticket_description = $conn->real_escape_string($_POST['ticket_description']);
     $ticket_priority = $conn->real_escape_string($_POST['ticket_priority']);
+    $admin_fullname = $conn->real_escape_string($_POST['admin_id']);
 
     // Generate ticket number
     $ticket_number = str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT);
 
     // Set default status
     $ticket_status = 'Pending';
+
+    // Fetch admin_id from the admin_user table
+    $admin_query = "SELECT admin_id FROM admin_user WHERE admin_fullname = '$admin_fullname'";
+    $admin_result = mysqli_query($conn, $admin_query);
+
+    // Check if the query was successful
+    if ($admin_result) {
+        $admin_row = mysqli_fetch_assoc($admin_result);
+
+        // Check if admin_row is not null
+        if ($admin_row !== null) {
+            $admin_id = $admin_row['admin_id'];
+            $admin_fullname_display = $admin_fullname;
+        } else {
+            // If admin is "Anyone," set admin_id to null and display "Unassigned"
+            $admin_id = null;
+            $admin_fullname_display = 'Unassigned';
+        }
+    } else {
+        echo "Error fetching admin ID: " . mysqli_error($conn);
+        exit();
+    }
+
 
     // Fetch ticket category name from the ticket_category table
     $category_query = "SELECT ticket_category FROM ticket_category WHERE ticket_category = '$ticket_category_id'";
@@ -32,8 +56,9 @@ if (isset($_POST['add_tickets'])) {
         $ticket_category = $category_row['ticket_category'];
 
         // Construct SQL query
-        $sql = "INSERT INTO `tickets` (user_id, ticket_number, ticket_category, ticket_description, ticket_priority, ticket_status)
-                VALUES ('$user_id', '$ticket_number', '$ticket_category', '$ticket_description', '$ticket_priority', '$ticket_status')";
+        $sql = "INSERT INTO `tickets` (user_id, admin_id, ticket_number, ticket_category, ticket_description, ticket_priority, ticket_status)
+VALUES ('$user_id', " . ($admin_id !== null ? "'$admin_id'" : 'NULL') . ", '$ticket_number', '$ticket_category', '$ticket_description', '$ticket_priority', '$ticket_status')";
+
 
         // Execute SQL query
         if (mysqli_query($conn, $sql)) {
@@ -46,18 +71,11 @@ if (isset($_POST['add_tickets'])) {
     }
 }
 
-
 // Fetch all tickets for the specific user
 $ticket_for_specific_users = "SELECT * FROM `tickets` WHERE user_id = '$user_id' AND ticket_status = 'Pending'";
-
 $ticket_result_specific_users = $conn->query($ticket_for_specific_users);
+
 // Get the length of the ticket list for Users
 $activeTicketsCount = ($ticket_result_specific_users) ? $ticket_result_specific_users->num_rows : 0;
-
-
-// Fetch all tickets for the admin to view
-$ticket_for_admin = "SELECT * FROM `tickets` WHERE ticket_status = 'Pending'";
-$ticket_result_admin = $conn->query($ticket_for_admin);
-$activeTicketsCountAdmin = ($ticket_result_admin) ? $ticket_result_admin->num_rows : 0;
 
 ?>

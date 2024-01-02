@@ -18,6 +18,6 @@ if (!isset($_SESSION['user_id'])) {
 
   <!-- Topbar Search -->
   <h1 class="h3 mb-0 text-gray-800">
-    <?php echo $_SESSION['user_firstname'] . ' ' . $_SESSION['user_lastname']; ?>
+    <?php echo "User: ". $_SESSION['user_firstname'] . ' ' . $_SESSION['user_lastname']; ?>
   </h1>
 </nav>

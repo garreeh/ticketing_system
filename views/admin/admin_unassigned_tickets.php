@@ -1,14 +1,12 @@
 <?php
 include './../../connections/connections.php';
-include './../../controllers/add_ticket_process.php';
-
 
 if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
 
-if (!isset($_SESSION['user_id'])) {
-  header("Location: /ticketing_system/index.php");
+if (!isset($_SESSION['admin_id'])) {
+  header("Location: /ticketing_system/admin.php");
   exit();
 }
 
@@ -40,7 +38,7 @@ if (!isset($_SESSION['user_id'])) {
   <!-- Page Wrapper -->
   <div id="wrapper">
     <!-- Sidebar -->
-    <?php include './../../includes/user_navigation.php'; ?>
+    <?php include './../../includes/admin_navigation.php'; ?>
     <!-- End of Sidebar -->
 
     <!-- MODAL ADD TICKET -->
@@ -55,61 +53,6 @@ if (!isset($_SESSION['user_id'])) {
             </button>
           </div>
 
-          <div class="modal-body">
-
-            <form method="post" enctype="multipart/form-data">
-              <div class="form-group">
-                <label for="ticket_category">Ticket Category:</label>
-                <select class="form-control" id="ticket_category" name="ticket_category" required>
-                  <?php
-
-                  $sql = "SELECT * FROM ticket_category";
-                  $result = $conn->query($sql);
-                  while ($row = $result->fetch_array()) {
-                    echo "<option value=\"" . htmlspecialchars($row['ticket_category']) . "\"> " . htmlspecialchars($row['ticket_category']) . "</option>";
-                  }
-                  ?>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="ticket_description">Ticket Description:</label>
-                <textarea class="form-control" id="ticket_description" name="ticket_description"
-                  placeholder="Enter Ticket Description" rows="4" cols="50" required></textarea>
-              </div>
-
-              <div class="form-group">
-                <label for="ticket_priority">Ticket Priority:</label>
-                <select class="form-control" id="ticket_priority" name="ticket_priority" required>
-                  <option value="Normal">Normal</option>
-                  <option value="Priority">Priority</option>
-                  <option value="Urgent">Urgent</option>
-                </select>
-              </div>
-
-              <select class="form-control" id="admin_id" name="admin_id" required>
-                <option value="null">Anyone</option>
-                <?php
-                $sql = "SELECT * FROM admin_user";
-                $result = $conn->query($sql);
-
-                while ($row = $result->fetch_array()) {
-                  echo "<option value=\"" . htmlspecialchars($row['admin_fullname']) . "\"> " . htmlspecialchars($row['admin_fullname']) . "</option>";
-                }
-                ?>
-              </select>
-
-
-              <!-- Add a hidden input field to submit the form with the button click -->
-              <input type="hidden" name="add_tickets" value="1">
-
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Add</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
-            </form>
-          </div>
-
         </div>
       </div>
     </div>
@@ -119,7 +62,7 @@ if (!isset($_SESSION['user_id'])) {
       <!-- Main Content -->
       <div id="content">
         <!-- Topbar -->
-        <?php include './../../includes/user_topbar.php'; ?>
+        <?php include './../../includes/admin_topbar.php'; ?>
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -127,13 +70,11 @@ if (!isset($_SESSION['user_id'])) {
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">My Tickets</h1>
+            <h1 class="h3 mb-0 text-gray-800">UNASSIGNED TICKETS</h1>
           </div>
-          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4" data-toggle="modal"
-            data-target="#addItemModal"> <i class="fas fa-plus"></i> Issue Ticket</a>
-          <a href="./../../excels/users_tickets_export.php"
-            class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4"><i class="fas fa-file-excel"></i>
-            Export Excel</a>
+          <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4" data-toggle="modal"
+            data-target="#addItemModal"> <i class="fas fa-plus"></i> Issue Ticket</a> -->
+          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4"><i class="fas fa-file-excel"></i> Export Excel</a>
 
           <div class="row">
             <div class="col-xl-12 col-lg-12">
@@ -144,12 +85,12 @@ if (!isset($_SESSION['user_id'])) {
                     <thead>
 
                       <tr>
+                        <th>Client Fullname</th>
                         <th>Ticket Number</th>
                         <th>Ticket Category</th>
                         <th>Ticket Description</th>
                         <th>Ticket Priority</th>
                         <th>Ticket Status</th>
-                        <th>Assigned to</th>
                         <th>Date Created</th>
                         <th>Operations</th>
                       </tr>
@@ -158,35 +99,41 @@ if (!isset($_SESSION['user_id'])) {
                     <tbody>
                       <?php
 
-                      if (!isset($_SESSION['user_id'])) {
-                        header("Location: /ticketing_system/index.php");
+                      if (!isset($_SESSION['admin_id'])) {
+                        header("Location: /ticketing_system/admin.php");
                         exit();
                       }
 
-                      $user_id = $_SESSION['user_id'];
+                      $admin_id = $_SESSION['admin_id'];
 
-                      $select_query = "SELECT tickets.*, admin_user.admin_fullname
-                      FROM tickets
-                      LEFT JOIN admin_user ON tickets.admin_id = admin_user.admin_id
-                      WHERE tickets.user_id = '$user_id'";
-
+                      $select_query = "SELECT tickets.*, z_user.user_firstname, z_user.user_lastname 
+                      FROM tickets 
+                      LEFT JOIN z_user ON tickets.user_id = z_user.user_id
+                      WHERE tickets.admin_id = '$admin_id'";
                       $result = mysqli_query($conn, $select_query);
 
                       while ($row = mysqli_fetch_assoc($result)) {
+                        $user_firstname = $row['user_firstname'];
+                        $user_lastname = $row['user_lastname'];
                         $ticket_id = $row['ticket_id'];
                         $ticket_number = $row['ticket_number'];
                         $ticket_category = $row['ticket_category'];
                         $ticket_description = $row['ticket_description'];
                         $ticket_priority = $row['ticket_priority'];
                         $ticket_status = $row['ticket_status'];
-                        $admin_fullname = $row['admin_fullname'];
                         $created_at = $row['created_at'];
 
                         ?>
                         <tr>
 
                           <td>
-                            <a href="#" data-toggle="modal" data-target="#updateModal_<?php echo $ticket_number; ?>">
+                            <a href="#" data-toggle="modal"
+                              data-target="#updateModal_<?php echo $user_firstname . " " . $user_lastname; ?>">
+                              <?php echo $user_firstname . " " . $user_lastname; ?>
+                            </a>
+                          </td>
+
+                          <td> <a href="#" data-toggle="modal" data-target="#updateModal_<?php echo $ticket_number; ?>">
                               <?php echo $ticket_number; ?>
                             </a>
                           </td>
@@ -212,11 +159,6 @@ if (!isset($_SESSION['user_id'])) {
                             </a>
                           </td>
 
-                          <td>
-                            <a href="#" data-toggle="modal" data-target="#updateModal_<?php echo $admin_fullname; ?>">
-                              <?php echo ($admin_fullname !== null) ? $admin_fullname : "Anyone"; ?>
-                            </a>
-                          </td>
                           <td> <a href="#" data-toggle="modal" data-target="#updateModal_<?php echo $created_at; ?>">
                               <?php echo $created_at; ?>
                             </a>
@@ -224,7 +166,9 @@ if (!isset($_SESSION['user_id'])) {
 
                           <td>
                             <a href="#" id="operations" class="btn btn-sm btn-info shadow-sm" data-toggle="modal"
-                              data-target="#updateModal_<?php echo $ticket_id; ?>">Edit</a>
+                              data-target="#updateModal_<?php echo $ticket_id; ?>">Mark as done</a>
+                            <a href="./../../controllers/admin_delete_tickets_process.php?ticket_id=<?php echo $ticket_id; ?>"
+                              id="operations" class="btn btn-sm btn-danger shadow-sm">Delete</a>
                           </td>
                         </tr>
                       <?php } ?>

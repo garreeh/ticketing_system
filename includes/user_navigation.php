@@ -2,12 +2,12 @@
 include './../../connections/connections.php';
 
 if (session_status() == PHP_SESSION_NONE) {
-  session_start();
+	session_start();
 }
 
 if (!isset($_SESSION['user_id'])) {
-  header("Location: /ticketing_system/index.php");
-  exit();
+	header("Location: /ticketing_system/index.php");
+	exit();
 }
 ?>
 <!DOCTYPE html>
@@ -56,7 +56,10 @@ if (!isset($_SESSION['user_id'])) {
 		<li class="nav-item">
 			<a class="nav-link" href="/ticketing_system/views/users/users_tickets.php">
 				<i class="fas fa-fw fa-clipboard-list"></i>
-				<span>Issue Ticket</span></a>
+				<span>My Ticket</span></a>
+			<a class="nav-link" href="/ticketing_system/views/users/users_closed_tickets.php">
+				<i class="fas fa-fw fa-clipboard-list"></i>
+				<span>My Closed Ticket</span></a>
 		</li>
 		<!-- Divider -->
 		<hr class="sidebar-divider">

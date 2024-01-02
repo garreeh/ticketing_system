@@ -53,43 +53,6 @@ if (!isset($_SESSION['admin_id'])) {
             </button>
           </div>
 
-          <div class="modal-body">
-
-            <form method="post" enctype="multipart/form-data">
-              <div class="form-group">
-                <label for="ticket_category">Ticket Category:</label>
-                <select class="form-control" id="ticket_category" name="ticket_category" required>
-                  <option value="Software">Software</option>
-                  <option value="Hardware">Hardware</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="ticket_description">Ticket Description:</label>
-                <input type="text" class="form-control" id="ticket_description" name="ticket_description"
-                  placeholder="Enter Ticket Description" required>
-              </div>
-
-
-              <div class="form-group">
-                <label for="ticket_priority">Ticket Priority:</label>
-                <select class="form-control" id="ticket_priority" name="ticket_priority" required>
-                  <option value="Normal">Normal</option>
-                  <option value="Priority">Priority</option>
-                  <option value="Urgent">Urgent</option>
-                </select>
-              </div>
-
-              <!-- Add a hidden input field to submit the form with the button click -->
-              <input type="hidden" name="add_tickets" value="1">
-
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Add</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
-            </form>
-          </div>
-
         </div>
       </div>
     </div>
@@ -107,12 +70,11 @@ if (!isset($_SESSION['admin_id'])) {
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">TICKETS</h1>
+            <h1 class="h3 mb-0 text-gray-800">TICKETS ASSIGNED TO YOU</h1>
           </div>
           <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4" data-toggle="modal"
             data-target="#addItemModal"> <i class="fas fa-plus"></i> Issue Ticket</a> -->
-          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4" data-toggle="modal"
-            data-target="#"><i class="fas fa-file-excel"></i> Export Excel</a>
+          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4"><i class="fas fa-file-excel"></i> Export Excel</a>
 
           <div class="row">
             <div class="col-xl-12 col-lg-12">
@@ -146,9 +108,9 @@ if (!isset($_SESSION['admin_id'])) {
 
                       $select_query = "SELECT tickets.*, z_user.user_firstname, z_user.user_lastname 
                       FROM tickets 
-                      LEFT JOIN z_user ON tickets.user_id = z_user.user_id";
+                      LEFT JOIN z_user ON tickets.user_id = z_user.user_id
+                      WHERE tickets.admin_id = '$admin_id'";
                       $result = mysqli_query($conn, $select_query);
-
 
                       while ($row = mysqli_fetch_assoc($result)) {
                         $user_firstname = $row['user_firstname'];

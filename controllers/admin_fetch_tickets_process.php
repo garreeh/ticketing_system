@@ -11,7 +11,7 @@ if (!isset($_SESSION['admin_id'])) {
 $admin_id = $_SESSION['admin_id'];
 
 // Fetch all tickets for the admin to view
-$ticket_for_admin = "SELECT * FROM `tickets` WHERE ticket_status = 'Pending'";
+$ticket_for_admin = "SELECT * FROM `tickets` WHERE admin_id = '$admin_id' AND ticket_status = 'Pending'";
 $ticket_result_admin = $conn->query($ticket_for_admin);
 $activeTicketsCountAdmin = ($ticket_result_admin) ? $ticket_result_admin->num_rows : 0;
 

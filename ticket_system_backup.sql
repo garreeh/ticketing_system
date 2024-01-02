@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 02, 2024 at 11:04 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jan 01, 2024 at 10:41 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -60,19 +60,16 @@ CREATE TABLE `tickets` (
   `ticket_description` text DEFAULT NULL,
   `ticket_priority` enum('Normal','Priority','Urgent') DEFAULT NULL,
   `ticket_status` enum('Pending','Closed') DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `admin_id` int(11) DEFAULT NULL
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tickets`
 --
 
-INSERT INTO `tickets` (`ticket_id`, `user_id`, `ticket_number`, `ticket_category`, `ticket_description`, `ticket_priority`, `ticket_status`, `created_at`, `admin_id`) VALUES
-(37, 123, '505151', 'Hardware', 'testttt jan 2 2024', 'Normal', 'Pending', '2024-01-02 06:18:06', 5),
-(38, 123, '063552', 'Hardware', 'test ltaest jan 2 2023', 'Normal', 'Pending', '2024-01-02 06:18:41', 7),
-(39, 2, '591221', 'Hardware', 'testtesttt', 'Normal', 'Pending', '2024-01-02 07:22:23', 5),
-(53, 123, '667093', 'Hardware', 'test', 'Normal', 'Pending', '2024-01-02 08:36:46', NULL);
+INSERT INTO `tickets` (`ticket_id`, `user_id`, `ticket_number`, `ticket_category`, `ticket_description`, `ticket_priority`, `ticket_status`, `created_at`) VALUES
+(33, 123, '517124', 'Hardware', 'test', 'Normal', 'Pending', '2024-01-01 09:39:12'),
+(34, 123, '475833', 'Software', 'testset', 'Urgent', 'Pending', '2024-01-01 09:39:20');
 
 -- --------------------------------------------------------
 
@@ -92,8 +89,7 @@ CREATE TABLE `ticket_category` (
 
 INSERT INTO `ticket_category` (`ticket_category_id`, `ticket_category`, `created_at`) VALUES
 (1, 'Hardware', '2024-01-01 09:37:36'),
-(2, 'Software', '2024-01-01 09:37:40'),
-(3, 'Request for Inventory', '2024-01-02 02:58:15');
+(2, 'Software', '2024-01-01 09:37:40');
 
 -- --------------------------------------------------------
 
@@ -165,8 +161,7 @@ ALTER TABLE `admin_user`
 --
 ALTER TABLE `tickets`
   ADD PRIMARY KEY (`ticket_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `idx_admin_id` (`admin_id`);
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `ticket_category`
@@ -194,13 +189,13 @@ ALTER TABLE `admin_user`
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `ticket_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `ticket_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `ticket_category`
 --
 ALTER TABLE `ticket_category`
-  MODIFY `ticket_category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ticket_category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `z_user`
@@ -216,8 +211,7 @@ ALTER TABLE `z_user`
 -- Constraints for table `tickets`
 --
 ALTER TABLE `tickets`
-  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `z_user` (`user_id`),
-  ADD CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `admin_user` (`admin_id`);
+  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `z_user` (`user_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
