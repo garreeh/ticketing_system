@@ -2,7 +2,7 @@
 $sql_details = array(
     'user' => 'root',
     'pass' => '',
-    'db' => 'vssphcom_vetsol_kal',
+    'db' => 'ticket_system',
     'host' => 'localhost'
 );
 

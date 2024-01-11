@@ -107,8 +107,6 @@ if (!isset($_SESSION['admin_id'])) {
                       <tr>
                         <th>Ticket Category ID</th>
                         <th>Ticket Category</th>
-
-
                         <th>Date Created</th>
                         <th>Operations</th>
                       </tr>
