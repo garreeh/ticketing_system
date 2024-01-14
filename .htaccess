@@ -4,3 +4,6 @@ RewriteRule \.(pdf|zip|txt|pcb|bin|rar|7z|rom)$ - [NC,F,L]
 
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^ %{REQUEST_URI}.php [NC,L]
+
+
+Options -Indexes

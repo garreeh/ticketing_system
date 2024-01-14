@@ -5,9 +5,12 @@ if (session_status() == PHP_SESSION_NONE) {
 	session_start();
 }
 
-if (isset($_SESSION['admin_id'])) {
-	header("Location: /ticketing_system/views/admin/admin_dashboard.php");
+if (isset($_SESSION['user_id'])) {
+	header("Location: /ticketing_system/views/users/users_dashboard.php");
 	exit();
+} else if (isset($_SESSION['admin_id'])) {
+  header("Location: /ticketing_system/views/admin/admin_dashboard.php");
+  exit();
 }
 ?>
 

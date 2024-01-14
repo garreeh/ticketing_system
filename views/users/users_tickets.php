@@ -137,99 +137,21 @@ if (!isset($_SESSION['user_id'])) {
 
           <div class="row">
             <div class="col-xl-12 col-lg-12">
-              <div class="card shadow mb-4">
-                <!-- Card Body -->
+              <div class="tab-pane fade show active" id="aa" role="tabpanel" aria-labelledby="aa-tab">
                 <div class="table-responsive">
-                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <table class="table custom-table table-hover" name="view_tickets" id="view_tickets">
                     <thead>
-
                       <tr>
                         <th>Ticket Number</th>
-                        <th>Ticket Category</th>
-                        <th>Ticket Description</th>
-                        <th>Ticket Priority</th>
-                        <th>Ticket Status</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Priority</th>
+                        <th>Status</th>
                         <th>Assigned to</th>
                         <th>Date Created</th>
-                        <th>Operations</th>
+                        <th>Manage</th>
                       </tr>
-
                     </thead>
-                    <tbody>
-                      <?php
-
-                      if (!isset($_SESSION['user_id'])) {
-                        header("Location: /ticketing_system/index.php");
-                        exit();
-                      }
-
-                      $user_id = $_SESSION['user_id'];
-
-                      $select_query = "SELECT tickets.*, admin_user.admin_fullname
-                      FROM tickets
-                      LEFT JOIN admin_user ON tickets.admin_id = admin_user.admin_id
-                      WHERE tickets.user_id = '$user_id'";
-
-                      $result = mysqli_query($conn, $select_query);
-
-                      while ($row = mysqli_fetch_assoc($result)) {
-                        $ticket_id = $row['ticket_id'];
-                        $ticket_number = $row['ticket_number'];
-                        $ticket_category = $row['ticket_category'];
-                        $ticket_description = $row['ticket_description'];
-                        $ticket_priority = $row['ticket_priority'];
-                        $ticket_status = $row['ticket_status'];
-                        $admin_fullname = $row['admin_fullname'];
-                        $created_at = $row['created_at'];
-
-                        ?>
-                        <tr>
-
-                          <td>
-                            <a href="#" data-toggle="modal" data-target="#updateModal_<?php echo $ticket_number; ?>">
-                              <?php echo $ticket_number; ?>
-                            </a>
-                          </td>
-
-                          <td> <a href="#" data-toggle="modal" data-target="#updateModal_<?php echo $ticket_category; ?>">
-                              <?php echo $ticket_category; ?>
-                            </a>
-                          </td>
-
-                          <td> <a href="#" data-toggle="modal"
-                              data-target="#updateModal_<?php echo $ticket_description; ?>">
-                              <?php echo $ticket_description; ?>
-                            </a>
-                          </td>
-
-                          <td> <a href="#" data-toggle="modal" data-target="#updateModal_<?php echo $ticket_priority; ?>">
-                              <?php echo $ticket_priority; ?>
-                            </a>
-                          </td>
-
-                          <td> <a href="#" data-toggle="modal" data-target="#updateModal_<?php echo $ticket_status; ?>">
-                              <?php echo $ticket_status; ?>
-                            </a>
-                          </td>
-
-                          <td>
-                            <a href="#" data-toggle="modal" data-target="#updateModal_<?php echo $admin_fullname; ?>">
-                              <?php echo ($admin_fullname !== null) ? $admin_fullname : "Anyone"; ?>
-                            </a>
-                          </td>
-                          <td> <a href="#" data-toggle="modal" data-target="#updateModal_<?php echo $created_at; ?>">
-                              <?php echo $created_at; ?>
-                            </a>
-                          </td>
-
-                          <td>
-                            <a href="#" id="operations" class="btn btn-sm btn-info shadow-sm" data-toggle="modal"
-                              data-target="#updateModal_<?php echo $ticket_id; ?>">Edit</a>
-                          </td>
-                        </tr>
-                      <?php } ?>
-
-                    </tbody>
                   </table>
                 </div>
               </div>
@@ -280,53 +202,21 @@ if (!isset($_SESSION['user_id'])) {
   <script src="./../../assets/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="./../../assets/admin/js/sb-admin-2.min.js"></script>
 
+  <!-- Data tables -->
+  <link rel="stylesheet" type="text/css" href="./../../assets/datatables/datatables.min.css" />
+  <script type="text/javascript" src="./../../assets/datatables/datatables.min.js"></script>
+
 </body>
 
 </html>
 
 <script>
-
   $(document).ready(function () {
-    // Show the selected file name in the custom file input
-    $("#fileToUpload").change(function () {
-      var fileName = $(this).val().split("\\").pop();
-      $(this).next(".custom-file-label").html(fileName);
+    $('#view_tickets').dataTable({
+      "pagingType": "numbers",
+      "processing": true,
+      "serverSide": true,
+      "ajax": "./../../controllers/tables/users/view_tickets_table.php"
     });
   });
-
-  function incrementQuantity() {
-    var quantityInput = document.getElementById('add_product_qty');
-    var currentQuantity = parseInt(quantityInput.value) || 0;
-    quantityInput.value = currentQuantity + 1;
-  }
-
-  function decrementQuantity() {
-    var quantityInput = document.getElementById('add_product_qty');
-    var currentQuantity = parseInt(quantityInput.value) || 0;
-    // Ensure the quantity doesn't go below zero
-    quantityInput.value = Math.max(0, currentQuantity - 1);
-  }
 </script>
-
-<style>
-  #add_product_qty,
-  #add_product_price {
-    /* For Firefox */
-    -moz-appearance: textfield;
-
-    /* For other browsers */
-    appearance: textfield;
-
-    /* For Webkit browsers like Chrome and Safari */
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  #add_product_qty::-webkit-inner-spin-button,
-  #add_product_qty::-webkit-outer-spin-button,
-  #add_product_price::-webkit-inner-spin-button,
-  #add_product_price::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-</style>

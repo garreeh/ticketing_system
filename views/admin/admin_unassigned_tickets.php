@@ -86,6 +86,7 @@ if (!isset($_SESSION['admin_id'])) {
                         <th>Priority</th>
                         <th>Status</th>
                         <th>Date Created</th>
+                        <th>Manage</th>
                       </tr>
                     </thead>
                   </table>
@@ -148,55 +149,11 @@ if (!isset($_SESSION['admin_id'])) {
 
 <script>
   $(document).ready(function() {
-    // Show the selected file name in the custom file input
-    $("#fileToUpload").change(function() {
-      var fileName = $(this).val().split("\\").pop();
-      $(this).next(".custom-file-label").html(fileName);
-    });
-  });
-
-  function incrementQuantity() {
-    var quantityInput = document.getElementById('add_product_qty');
-    var currentQuantity = parseInt(quantityInput.value) || 0;
-    quantityInput.value = currentQuantity + 1;
-  }
-
-  function decrementQuantity() {
-    var quantityInput = document.getElementById('add_product_qty');
-    var currentQuantity = parseInt(quantityInput.value) || 0;
-    // Ensure the quantity doesn't go below zero
-    quantityInput.value = Math.max(0, currentQuantity - 1);
-  }
-
-  $(document).ready(function() {
     $('#unassigned_ticket').dataTable({
       "pagingType": "numbers",
       "processing": true,
       "serverSide": true,
-      "ajax": "./../../controllers/tables/unassigned_tickets_table.php"
+      "ajax": "./../../controllers/tables/admin/unassigned_tickets_table.php"
     });
   });
 </script>
-
-<style>
-  #add_product_qty,
-  #add_product_price {
-    /* For Firefox */
-    -moz-appearance: textfield;
-
-    /* For other browsers */
-    appearance: textfield;
-
-    /* For Webkit browsers like Chrome and Safari */
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  #add_product_qty::-webkit-inner-spin-button,
-  #add_product_qty::-webkit-outer-spin-button,
-  #add_product_price::-webkit-inner-spin-button,
-  #add_product_price::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-</style>
