@@ -58,9 +58,9 @@ if (!isset($_SESSION['user_id'])) {
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">My Closed Tickets</h1>
           </div>
-          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4" data-toggle="modal"
-            data-target="#addItemModal"><i class="fas fa-file-excel"></i> Export
-            Excel</a>
+          <a href="./../../excels/users_closed_tickets_export.php"
+            class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4"><i class="fas fa-file-excel"></i>
+            Export Excel</a>
 
           <div class="row">
             <div class="col-xl-12 col-lg-12">

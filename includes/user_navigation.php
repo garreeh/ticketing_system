@@ -70,7 +70,7 @@ if (!isset($_SESSION['user_id'])) {
 		</div>
 		<!-- Nav Item - Charts -->
 		<li class="nav-item">
-			<a class="nav-link" href="charts.html">
+			<a class="nav-link" href="/ticketing_system/views/users/users_settings.php">
 				<i class="fas fa-fw fa-cogs"></i>
 				<span>Settings</span></a>
 		</li>
