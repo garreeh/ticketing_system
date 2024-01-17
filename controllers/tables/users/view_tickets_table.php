@@ -129,7 +129,7 @@ $user_id = $_SESSION['user_id'];
 // Include the SSP class
 require('../../../assets/datatables/ssp.class_with_where.php');
 
-$where = "user_id = '$user_id'";
+$where = "user_id = '$user_id' AND ticket_status = 'Pending'";
 
 // Fetch and encode data for DataTables
 echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $where));
