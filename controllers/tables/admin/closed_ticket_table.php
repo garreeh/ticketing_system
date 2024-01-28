@@ -100,6 +100,8 @@ $columns = array(
 			}
 
 			return $formatted_time;
+
+			// return $row['created_at'];
 		}
 	),
 
@@ -128,10 +130,43 @@ $admin_id = $_SESSION['admin_id'];
 // Include the SSP class
 require('../../../assets/datatables/ssp.class_with_where.php');
 
-$where = "admin_id = '$admin_id' AND ticket_status = 'Closed'";
+date_default_timezone_set('Asia/Manila');
+
+$datetoday = date("Y-m-d");
+$where = "ticket_status = 'Closed' AND DATE(created_at) = '$datetoday'";
 
 // Fetch and encode data for DataTables
 echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $where));
+
+// function getDateOnlyToday()
+// {
+//     include '../../../connections/connections.php';
+
+//     $today = date('Y-m-d');
+//     $query = "SELECT * FROM z_user WHERE DATE(created_at) = '$today'";
+
+//     // Assume $result contains the fetched result
+//     $result = $conn->query($query);
+
+//     // Check if the query was successful
+//     if ($result) {
+//         // Fetch the results as an associative array
+//         $row = $result->fetch_assoc();
+        
+//         // Close the database connection
+//         $conn->close();
+
+//         return $row;
+//     } else {
+//         // Handle the case where the query was not successful
+//         echo "Error executing query: " . $conn->error;
+
+//         // Close the database connection
+//         $conn->close();
+
+//         return false;
+//     }
+// }
 
 function getUserFullname($user_id)
 {
@@ -150,5 +185,6 @@ function getUserFullname($user_id)
 	return ($row !== null) ? $row['user_firstname'] . ' ' . $row['user_lastname'] : null;
 
 }
+
 
 ?>

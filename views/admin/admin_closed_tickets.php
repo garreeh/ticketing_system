@@ -9,7 +9,6 @@ if (!isset($_SESSION['admin_id'])) {
   header("Location: /ticketing_system/admin.php");
   exit();
 }
-
 ?>
 
 <!DOCTYPE html>
