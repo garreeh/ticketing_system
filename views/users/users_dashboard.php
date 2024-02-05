@@ -15,6 +15,8 @@ if (!isset($_SESSION['user_id'])) {
 <!DOCTYPE html>
 <html lang="en">
 
+
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,9 +34,13 @@ if (!isset($_SESSION['user_id'])) {
 
   <!-- Custom styles for this template-->
   <link href="./../../assets/admin/css/sb-admin-2.min.css" rel="stylesheet">
+
+
 </head>
 
 <body id="page-top">
+
+
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -47,6 +53,7 @@ if (!isset($_SESSION['user_id'])) {
     <div id="content-wrapper" class="d-flex flex-column">
       <!-- Main Content -->
       <div id="content">
+
         <!-- Topbar -->
         <?php include './../../includes/user_topbar.php'; ?>
         <!-- End of Topbar -->

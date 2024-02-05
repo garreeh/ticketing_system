@@ -31,34 +31,14 @@ $columns = array(
     'dt' => 2,
     'field' => 'created_at',
     'formatter' => function ($lab3, $row) {
-      // Set the time zone to Asia/Manila
-      $timezone = new DateTimeZone('Asia/Manila');
+			// Set the time zone to Asia/Manila
+			$timezone = new DateTimeZone('Asia/Manila');
 
-      // Create DateTime objects with the specified time zone
-      $created_at = new DateTime($row['created_at'], $timezone);
-      $current_time = new DateTime(null, $timezone);
+			// Create DateTime object with the specified time zone
+			$created_at = new DateTime($row['created_at'], $timezone);
 
-      // Calculate the time difference
-      $interval = $current_time->diff($created_at);
-
-      // Format the time difference
-      $formatted_time = '';
-
-      if ($interval->y > 0) {
-        $formatted_time = $interval->y . ' year' . ($interval->y > 1 ? 's' : '') . ' ago';
-      } elseif ($interval->m > 0) {
-        $formatted_time = $interval->m . ' month' . ($interval->m > 1 ? 's' : '') . ' ago';
-      } elseif ($interval->d > 0) {
-        $formatted_time = $interval->d . ' day' . ($interval->d > 1 ? 's' : '') . ' ago';
-      } elseif ($interval->h > 0) {
-        $formatted_time = $interval->h . ' hour' . ($interval->h > 1 ? 's' : '') . ' ago';
-      } elseif ($interval->i > 0) {
-        $formatted_time = $interval->i . ' minute' . ($interval->i > 1 ? 's' : '') . ' ago';
-      } elseif ($interval->s > 0) {
-        $formatted_time = $interval->s . ' second' . ($interval->s > 1 ? 's' : '') . ' ago';
-      }
-
-      return $formatted_time;
+			// Format the date and time with a divider in 12-hour format
+			return $created_at->format('M d, Y | h:i:s A');
     }
   ),
 

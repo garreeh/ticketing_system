@@ -14,6 +14,52 @@ if (isset($_SESSION['user_id'])) {
 }
 ?>
 
+<style>
+	#togglePassword {
+		cursor: pointer;
+	}
+
+	.custom-form-container {
+		border: 1px solid #ced4da;
+		border-radius: 8px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		background-color: whitesmoke;
+		padding: 20px;
+		margin-top: 50px;
+	}
+
+	/* Custom style to make the toast red */
+	#incorrectPasswordToast,
+	#userNotFoundToast {
+		position: fixed;
+		background-color: #dc3545;
+		color: #fff;
+	}
+
+	@media (max-width: 576px) {
+		#passwordMismatchToast {
+			width: 100%;
+			right: 0;
+			margin: 0;
+			transform: none;
+			top: 70px;
+		}
+	}
+
+	/* For Loading Spinner */
+	body {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		margin: 0;
+  }
+
+  #content {
+    display: none;
+  }
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,8 +87,11 @@ if (isset($_SESSION['user_id'])) {
 
 <body class="bg-gradient-primary">
 
-	<div class="container">
+	<div class="spinner-grow" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
 
+	<div class="container" id="content">
 		<!-- Outer Row -->
 		<div class="row justify-content-center">
 			<div class="col-xl-10 col-lg-12 col-md-9">
@@ -185,38 +234,14 @@ if (isset($_SESSION['user_id'])) {
 		// Send the FormData object with the POST request
 		xhr.send(formData);
 	}
+
+	// For Loader Spinner
+	document.addEventListener("DOMContentLoaded", function() {
+		setTimeout(function() {
+			// Hide the spinner
+			document.querySelector('.spinner-grow').style.display = 'none';
+			// Show the content
+			document.getElementById('content').style.display = 'block';
+		}, 3000);
+	});
 </script>
-
-<style>
-	#togglePassword {
-		cursor: pointer;
-	}
-
-	.custom-form-container {
-		border: 1px solid #ced4da;
-		border-radius: 8px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		background-color: whitesmoke;
-		padding: 20px;
-		margin-top: 50px;
-	}
-
-	/* Custom style to make the toast red */
-	#incorrectPasswordToast,
-	#userNotFoundToast {
-		position: fixed;
-		background-color: #dc3545;
-		color: #fff;
-	}
-
-	@media (max-width: 576px) {
-		#passwordMismatchToast {
-			width: 100%;
-			right: 0;
-			margin: 0;
-			transform: none;
-			top: 70px;
-			/* Adjust as needed */
-		}
-	}
-</style>

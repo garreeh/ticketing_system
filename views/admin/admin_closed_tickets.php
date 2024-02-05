@@ -66,7 +66,7 @@ if (!isset($_SESSION['admin_id'])) {
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">CLOSED TICKETS</h1>
+            <h1 class="h3 mb-0 text-gray-800">Closed Tickets</h1>
           </div>
 
           <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4"><i class="fas fa-file-excel"></i> Export Excel</a>

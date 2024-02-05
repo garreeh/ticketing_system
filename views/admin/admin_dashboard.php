@@ -54,93 +54,98 @@ if (!isset($_SESSION['admin_id'])) {
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-          </div>
+        </div>
+
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <div id="clockAndDate" class="h5 mb-0 font-weight-bold text-gray-800"></div>
+        </div>
 
           <!-- Content Row -->
           <div class="row">
 
-            <!-- Active Tickets Card -->
-            <div class="col-xl-3 col-md-6 mb-4">
+          <!-- Active Tickets Card -->
+          <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        All Active Tickets</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <?php echo $activeTicketsCountAdmin; ?>
-                      </div>
-
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Urgent Tickets Card -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        Urgent Tickets</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">Put number here</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Priority Tickets Card -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Priority Tickets
-                      </div>
+                  <div class="card-body">
                       <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                          <div class="h5 mb-0 font-weight-bold text-gray-800">Put number here</div>
-                        </div>
+                          <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                  All Active Tickets
+                              </div>
+                              <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $activeTicketsCountAdmin; ?></div>
+                          </div>
+                          <div class="col-auto">
+                              <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                          </div>
                       </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
                   </div>
-                </div>
               </div>
-            </div>
+          </div>
 
-            <!-- Closed Tickets Card -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-danger shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                        Closed Tickets</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">Put number here</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
+          <!-- Urgent Tickets Card -->
+          <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-info shadow h-100 py-2">
+                  <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                  Normal Tickets
+                              </div>
+                              <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $normal_count; ?></div>
+                          </div>
+                          <div class="col-auto">
+                              <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                          </div>
+                      </div>
                   </div>
-                </div>
               </div>
-            </div>
+          </div>
+
+          <!-- Priority Tickets Card -->
+          <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                  <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                  Priority Tickets
+                              </div>
+                              <div class="row no-gutters align-items-center">
+                                  <div class="col-auto">
+                                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $priority_count; ?></div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-auto">
+                              <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Closed Tickets Card -->
+          <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-danger shadow h-100 py-2">
+                  <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                  Urgent Tickets
+                              </div>
+                              <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $urgent_count; ?></div>
+                          </div>
+                          <div class="col-auto">
+                              <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
           </div>
         </div>
         <!-- /.container-fluid -->
@@ -202,3 +207,39 @@ if (!isset($_SESSION['admin_id'])) {
 </body>
 
 </html>
+
+<!-- Running Clock Script -->
+<!-- Running Clock Script -->
+<script>
+  function updateClockAndDate() {
+    var now = new Date();
+    var hours = now.getHours();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert 24-hour time to 12-hour time
+    var minutes = now.getMinutes();
+    var seconds = now.getSeconds();
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var month = monthNames[now.getMonth()];
+    var day = now.getDate();
+    var year = now.getFullYear();
+
+    // Format the time (add leading zero if needed)
+    var formattedTime = hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds + " " + ampm;
+
+    // Format the date
+    var formattedDate = month + " " + day + ", " + year;
+
+    // Update the clock and date elements
+    document.getElementById("clockAndDate").innerText = formattedTime + " | " + formattedDate;
+
+    // Update the clock and date every second
+    setTimeout(updateClockAndDate, 1000);
+  }
+
+  // Initial call to start the clock and date
+  updateClockAndDate();
+</script>
+
+
+
+

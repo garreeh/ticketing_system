@@ -49,21 +49,58 @@ $columns = array(
 	),
 
 	array(
-		'db' => 'ticket_priority',
-		'dt' => 4,
-		'field' => 'ticket_priority',
-		'formatter' => function ($lab5, $row) {
-			return $row['ticket_priority'];
-		}
+    'db' => 'ticket_priority',
+    'dt' => 4,
+    'field' => 'ticket_priority',
+    'formatter' => function ($lab5, $row) {
+			$ticket_priority = $row['ticket_priority'];
+
+			// Set color and dimensions based on ticket_priority
+			if ($ticket_priority == 'Normal') {
+					$color = '#ADD8E6'; // Light Blue
+			} elseif ($ticket_priority == 'Priority') {
+					$color = '#66FF99'; // Light Green
+			} else {
+					$color = '#FFCCCB'; // Light Red
+			}
+
+			// Set dimensions
+			$width = '70px'; // Adjust the value as needed
+			$height = '30px'; // Adjust the value as needed
+
+			// Set border-radius
+			$border_radius = '10px'; // Adjust the value as needed
+
+			// Return the HTML with the specified styles
+			return '<span style="display: inline-block; background-color: ' . $color . '; width: ' . $width . '; height: ' . $height . '; border-radius: ' . $border_radius . '; text-align: center; line-height: ' . $height . ';">' . $ticket_priority . '</span>';
+    }
 	),
 
+
 	array(
-		'db' => 'ticket_status',
-		'dt' => 5,
-		'field' => 'ticket_status',
-		'formatter' => function ($lab6, $row) {
-			return $row['ticket_status'];
-		}
+    'db' => 'ticket_status',
+    'dt' => 5,
+    'field' => 'ticket_status',
+    'formatter' => function ($lab6, $row) {
+			$ticket_status = $row['ticket_status'];
+
+			// Set color based on ticket_status
+			if ($ticket_status == 'Pending') {
+					$color = '#FFFFE0'; // Light Yellow
+			} else {
+					$color = '#FFCCCB'; // Light Red
+			}
+
+			// Set dimensions
+			$width = '70px'; // Adjust the value as needed
+			$height = '30px'; // Adjust the value as needed
+
+			// Set border-radius
+			$border_radius = '10px'; // Adjust the value as needed
+
+			// Return the HTML with the specified styles
+			return '<span style="display: inline-block; background-color: ' . $color . '; width: ' . $width . '; height: ' . $height . '; border-radius: ' . $border_radius . '; text-align: center; line-height: ' . $height . ';">' . $ticket_status . '</span>';
+    }
 	),
 
 	array(
@@ -74,31 +111,11 @@ $columns = array(
 			// Set the time zone to Asia/Manila
 			$timezone = new DateTimeZone('Asia/Manila');
 
-			// Create DateTime objects with the specified time zone
+			// Create DateTime object with the specified time zone
 			$created_at = new DateTime($row['created_at'], $timezone);
-			$current_time = new DateTime(null, $timezone);
 
-			// Calculate the time difference
-			$interval = $current_time->diff($created_at);
-
-			// Format the time difference
-			$formatted_time = '';
-
-			if ($interval->y > 0) {
-				$formatted_time = $interval->y . ' year' . ($interval->y > 1 ? 's' : '') . ' ago';
-			} elseif ($interval->m > 0) {
-				$formatted_time = $interval->m . ' month' . ($interval->m > 1 ? 's' : '') . ' ago';
-			} elseif ($interval->d > 0) {
-				$formatted_time = $interval->d . ' day' . ($interval->d > 1 ? 's' : '') . ' ago';
-			} elseif ($interval->h > 0) {
-				$formatted_time = $interval->h . ' hour' . ($interval->h > 1 ? 's' : '') . ' ago';
-			} elseif ($interval->i > 0) {
-				$formatted_time = $interval->i . ' minute' . ($interval->i > 1 ? 's' : '') . ' ago';
-			} elseif ($interval->s > 0) {
-				$formatted_time = $interval->s . ' second' . ($interval->s > 1 ? 's' : '') . ' ago';
-			}
-
-			return $formatted_time;
+			// Format the date and time with a divider in 12-hour format
+			return $created_at->format('M d, Y | h:i:s A');
 		}
 	),
 

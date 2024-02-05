@@ -70,7 +70,7 @@ if (!isset($_SESSION['admin_id'])) {
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">TICKETS ASSIGNED TO YOU</h1>
+            <h1 class="h3 mb-0 text-gray-800">Assigned Tickets</h1>
           </div>
           <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4" data-toggle="modal"
             data-target="#addItemModal"> <i class="fas fa-plus"></i> Issue Ticket</a> -->
