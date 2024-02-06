@@ -66,6 +66,10 @@ if (!isset($_SESSION['user_id'])) {
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
           </div>
 
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <div id="clockAndDate" class="h1 mb-0 font-weight-bold text-gray-800"></div>
+          </div>
+
           <!-- Content Row -->
           <div class="row">
 
@@ -186,3 +190,34 @@ if (!isset($_SESSION['user_id'])) {
 </body>
 
 </html>
+
+<!-- Running Clock Script -->
+<script>
+  function updateClockAndDate() {
+    var now = new Date();
+    var hours = now.getHours();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert 24-hour time to 12-hour time
+    var minutes = now.getMinutes();
+    var seconds = now.getSeconds();
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var month = monthNames[now.getMonth()];
+    var day = now.getDate();
+    var year = now.getFullYear();
+
+    // Format the time (add leading zero if needed)
+    var formattedTime = hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds + " " + ampm;
+
+    // Format the date
+    var formattedDate = month + " " + day + ", " + year;
+
+    // Update the clock and date elements
+    document.getElementById("clockAndDate").innerText = formattedTime + " | " + formattedDate;
+
+    // Update the clock and date every second
+    setTimeout(updateClockAndDate, 1000);
+  }
+
+  // Initial call to start the clock and date
+  updateClockAndDate();
+</script>

@@ -134,7 +134,10 @@ if (!isset($_SESSION['admin_id'])) {
       "pagingType": "numbers",
       "processing": true,
       "serverSide": true,
-      "ajax": "./../../controllers/tables/admin/unassigned_tickets_table.php"
+      "ajax": "./../../controllers/tables/admin/unassigned_tickets_table.php",
+      "oLanguage": {
+        "sInfoFiltered": "", // Hide the filtered in (Showing X to X of X entries)
+      }
     });
   });
 </script>

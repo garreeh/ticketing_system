@@ -8,22 +8,28 @@ $primaryKey = 'ticket_id';
 // Define columns for DataTables
 $columns = array(
 	array(
-		'db' => 'user_id',
+		'db' => 'z_user.user_firstname',
 		'dt' => 0,
-		'field' => 'user_id',
+		'field' =>'user_firstname',
 		'formatter' => function ($lab1, $row) {
-			$user_id = $row['user_id'];
 
-			// Fetch user_firstname from z_users based on user_id
-			$user_fullname = getUserFullname($user_id);
+			return $row['user_firstname'];
+		}
+	),
 
-			return $user_fullname;
+	// For lastname of User
+	array(
+		'db' => 'z_user.user_lastname',
+		'dt' => 1,
+		'field' => 'user_lastname',
+		'formatter' => function ($lab2, $row) {
+				return $row['user_lastname'];
 		}
 	),
 
 	array(
 		'db' => 'ticket_number',
-		'dt' => 1,
+		'dt' => 2,
 		'field' => 'ticket_number',
 		'formatter' => function ($lab2, $row) {
 			return $row['ticket_number'];
@@ -32,7 +38,7 @@ $columns = array(
 
 	array(
 		'db' => 'ticket_category',
-		'dt' => 2,
+		'dt' => 3,
 		'field' => 'ticket_category',
 		'formatter' => function ($lab3, $row) {
 			return $row['ticket_category'];
@@ -40,17 +46,49 @@ $columns = array(
 	),
 
 	array(
-		'db' => 'ticket_description',
-		'dt' => 3,
-		'field' => 'ticket_description',
-		'formatter' => function ($lab4, $row) {
-			return $row['ticket_description'];
-		}
+    'db' => 'ticket_description',
+    'dt' => 4,
+    'field' => 'ticket_description',
+    'formatter' => function ($lab4, $row) {
+			// Generate a unique ID for the modal based on ticket_id
+			$modalId = 'ticket_description_modal_' . $row['ticket_id'];
+
+			// Return the button and modal HTML
+			return '
+			<a href="#" class="view-ticket" data-toggle="modal" data-target="#' . $modalId . '">' . 'View' . '</a>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="' . $modalId . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+							<div class="modal-content">
+									<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">Ticket Description</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+											</button>
+									</div>
+									<div class="modal-body">
+											<!-- Modal content goes here -->
+											<p>' . $row['ticket_description'] .'</p>
+									</div>
+									<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									</div>
+							</div>
+					</div>
+			</div>
+
+			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+			';
+    }
 	),
+
 
 	array(
     'db' => 'ticket_priority',
-    'dt' => 4,
+    'dt' => 5,
     'field' => 'ticket_priority',
     'formatter' => function ($lab5, $row) {
 			$ticket_priority = $row['ticket_priority'];
@@ -79,7 +117,7 @@ $columns = array(
 
 	array(
     'db' => 'ticket_status',
-    'dt' => 5,
+    'dt' => 6,
     'field' => 'ticket_status',
     'formatter' => function ($lab6, $row) {
 			$ticket_status = $row['ticket_status'];
@@ -105,7 +143,7 @@ $columns = array(
 
 	array(
 		'db' => 'created_at',
-		'dt' => 6,
+		'dt' => 7,
 		'field' => 'created_at',
 		'formatter' => function ($lab3, $row) {
 			// Set the time zone to Asia/Manila
@@ -121,7 +159,7 @@ $columns = array(
 
 	array(
 		'db' => 'ticket_id',
-		'dt' => 7,
+		'dt' => 8,
 		'field' => 'ticket_id',
 		'formatter' => function ($lab4, $row) {
 			$ticket_id = $row['ticket_id'];
@@ -142,28 +180,14 @@ $sql_details = array(
 $admin_id = $_SESSION['admin_id'];
 
 // Include the SSP class
-require('../../../assets/datatables/ssp.class_with_where.php');
+require('../../../assets/datatables/ssp.class.php');
 
 $where = "admin_id = '$admin_id' AND ticket_status = 'Pending'";
 
-// Fetch and encode data for DataTables
-echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $where));
+$joinQuery = "FROM $table
+              LEFT JOIN z_user ON $table.user_id = z_user.user_id";
 
-function getUserFullname($user_id)
-{
+// Fetch and encode data for DataTables with the filter
+echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where));
 
-	include '../../../connections/connections.php';
-	// Your SQL query to get user_firstname from z_users
-	$query = "SELECT user_firstname, user_lastname FROM z_user WHERE user_id = $user_id";
-
-	// Assume $result contains the fetched result
-	$result = $conn->query($query);
-	$row = $result->fetch_assoc();
-
-	// Close the database connection
-	$conn->close();
-
-	return ($row !== null) ? $row['user_firstname'] . ' ' . $row['user_lastname'] : null;
-
-}
 ?>

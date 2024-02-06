@@ -84,7 +84,8 @@ if (!isset($_SESSION['admin_id'])) {
                   <table class="table custom-table table-hover" name="assigned_ticket" id="assigned_ticket">
                     <thead>
                       <tr>
-                        <th>Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                         <th>Ticket Number</th>
                         <th>Category</th>
                         <th>Description</th>
@@ -158,7 +159,17 @@ if (!isset($_SESSION['admin_id'])) {
       "pagingType": "numbers",
       "processing": true,
       "serverSide": true,
-      "ajax": "./../../controllers/tables/admin/assigned_tickets_table.php"
+      "ajax": "./../../controllers/tables/admin/assigned_tickets_table.php",
+      "oLanguage": {
+        "sInfoFiltered": "", // Hide the filtered in (Showing X to X of X entries)
+      },
+      columnDefs: [
+        {
+          target: 1,
+            visible: false,
+            searchable: false
+        },
+      ]
     });
   });
 </script>

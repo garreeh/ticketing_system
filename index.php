@@ -242,6 +242,6 @@ if (isset($_SESSION['user_id'])) {
 			document.querySelector('.spinner-grow').style.display = 'none';
 			// Show the content
 			document.getElementById('content').style.display = 'block';
-		}, 3000);
+		}, 1000);
 	});
 </script>

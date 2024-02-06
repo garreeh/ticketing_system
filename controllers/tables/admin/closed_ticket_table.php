@@ -41,12 +41,43 @@ $columns = array(
 	),
 
 	array(
-		'db' => 'ticket_description',
-		'dt' => 3,
-		'field' => 'ticket_description',
-		'formatter' => function ($lab4, $row) {
-			return $row['ticket_description'];
-		}
+    'db' => 'ticket_description',
+    'dt' => 3,
+    'field' => 'ticket_description',
+    'formatter' => function ($lab4, $row) {
+			// Generate a unique ID for the modal based on ticket_id
+			$modalId = 'ticket_description_modal_' . $row['ticket_id'];
+
+			// Return the button and modal HTML
+			return '
+			<a href="#" class="view-ticket" data-toggle="modal" data-target="#' . $modalId . '">' . 'View' . '</a>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="' . $modalId . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+							<div class="modal-content">
+									<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">Ticket Description</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+											</button>
+									</div>
+									<div class="modal-body">
+											<!-- Modal content goes here -->
+											<p>' . $row['ticket_description'] .'</p>
+									</div>
+									<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									</div>
+							</div>
+					</div>
+			</div>
+
+			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+			';
+    }
 	),
 
 	array(
@@ -54,7 +85,26 @@ $columns = array(
 		'dt' => 4,
 		'field' => 'ticket_priority',
 		'formatter' => function ($lab5, $row) {
-			return $row['ticket_priority'];
+			$ticket_priority = $row['ticket_priority'];
+
+			// Set color and dimensions based on ticket_priority
+			if ($ticket_priority == 'Normal') {
+					$color = '#ADD8E6'; // Light Blue
+			} elseif ($ticket_priority == 'Priority') {
+					$color = '#66FF99'; // Light Green
+			} else {
+					$color = '#FFCCCB'; // Light Red
+			}
+
+			// Set dimensions
+			$width = '70px'; // Adjust the value as needed
+			$height = '30px'; // Adjust the value as needed
+
+			// Set border-radius
+			$border_radius = '10px'; // Adjust the value as needed
+
+			// Return the HTML with the specified styles
+			return '<span style="display: inline-block; background-color: ' . $color . '; width: ' . $width . '; height: ' . $height . '; border-radius: ' . $border_radius . '; text-align: center; line-height: ' . $height . ';">' . $ticket_priority . '</span>';
 		}
 	),
 
@@ -132,36 +182,6 @@ $where = "ticket_status = 'Closed' AND DATE(created_at) = '$datetoday'";
 
 // Fetch and encode data for DataTables
 echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $where));
-
-// function getDateOnlyToday()
-// {
-//     include '../../../connections/connections.php';
-
-//     $today = date('Y-m-d');
-//     $query = "SELECT * FROM z_user WHERE DATE(created_at) = '$today'";
-
-//     // Assume $result contains the fetched result
-//     $result = $conn->query($query);
-
-//     // Check if the query was successful
-//     if ($result) {
-//         // Fetch the results as an associative array
-//         $row = $result->fetch_assoc();
-        
-//         // Close the database connection
-//         $conn->close();
-
-//         return $row;
-//     } else {
-//         // Handle the case where the query was not successful
-//         echo "Error executing query: " . $conn->error;
-
-//         // Close the database connection
-//         $conn->close();
-
-//         return false;
-//     }
-// }
 
 function getUserFullname($user_id)
 {

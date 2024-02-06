@@ -1,7 +1,6 @@
 <?php
 // Start the session
 session_start();
-
 // Define table and primary key
 $table = 'tickets';
 $primaryKey = 'ticket_id';
@@ -31,7 +30,34 @@ $columns = array(
 		'dt' => 2,
 		'field' => 'ticket_description',
 		'formatter' => function ($lab4, $row) {
-			return $row['ticket_description'];
+			// Generate a unique ID for the modal based on ticket_id
+			$modalId = 'ticket_description_modal_' . $row['ticket_id'];
+
+			// Return the button and modal HTML
+			return '
+			<a href="#" class="view-ticket" data-toggle="modal" data-target="#' . $modalId . '">' . 'View' . '</a>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="' . $modalId . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+							<div class="modal-content">
+									<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">Ticket Description</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+											</button>
+									</div>
+									<div class="modal-body">
+											<!-- Modal content goes here -->
+											<p>' . $row['ticket_description'] .'</p>
+									</div>
+									<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									</div>
+							</div>
+					</div>
+			</div>
+			';
 		}
 	),
 
@@ -92,23 +118,21 @@ $columns = array(
 
 
 	array(
-    'db' => 'admin_id',
+    'db' => 'admin_user.admin_fullname',
     'dt' => 5,
-    'field' => 'admin_id',
+    'field' => 'admin_fullname',
     'formatter' => function ($lab6, $row) {
-        $admin_id = $row['admin_id'];
-
-        // Fetch admin_fullname from admin_user based on admin_id
-        $admin_fullname = getAdminFullname($admin_id);
-
-        // If admin_fullname is NULL or empty, set it to "Anyone"
-
-        return $admin_fullname;
+        if (empty($row['admin_fullname'])) {
+            return "Anyone";
+        } else {
+            return $row['admin_fullname'];
+        }
     }
-),
+	),
+
 
 	array(
-		'db' => 'created_at',
+		'db' => 'tickets.created_at',
 		'dt' => 6,
 		'field' => 'created_at',
 		'formatter' => function ($lab3, $row) {
@@ -128,9 +152,83 @@ $columns = array(
 		'dt' => 7,
 		'field' => 'ticket_id',
 		'formatter' => function ($lab4, $row) {
-			$ticket_id = $row['ticket_id'];
-			$edit_button = '<a href="/ticketing_system/controllers/admin_assign_ticket_process.php?ticket_id=' . $ticket_id . '" class="btn btn-primary btn-sm"> <i class="fas fa-pencil-alt"></i> Edit</a>';
-			return $edit_button;
+			include './../../../connections/connections.php';
+
+			$modalId = 'ticket_edit_modal_' . $row['ticket_id'];
+
+			// Start the HTML string
+			$html = '<a href="#" class="view-ticket btn btn-primary btn-sm" data-toggle="modal" data-target="#' . $modalId . '"><i class="fas fa-pencil-alt"></i> Edit</a>';
+
+			$html .= '<div class="modal fade" id="'. $modalId . '" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="' . $modalId . '">Edit Ticket</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+											</div>
+											<div class="modal-body">
+												<form action="process_form.php" method="post" enctype="multipart/form-data">
+													<div class="form-group">
+														<label for="ticket_category">Ticket Category:</label>
+														<select class="form-control" id="ticket_category" name="ticket_category" required>';
+
+														// Append the options using PHP loop
+														$sql = "SELECT * FROM ticket_category";
+														$result = $conn->query($sql);
+														$current_category = "ticket_category"; // Assuming you have the current category stored somewhere
+														
+														while ($category = $result->fetch_array()) {
+																$category_name = htmlspecialchars($category['ticket_category']);
+																$selected = ($category_name == $current_category) ? 'selected' : '';
+																$html .= '<option value="' . $category_name . '" ' . $selected . '> ' . $category_name . '</option>';
+														}
+
+			// Continue with the HTML string
+			$html .= '</select>
+								</div>
+								<div class="form-group">
+									<label for="ticket_description">Ticket Description:</label>
+									<textarea class="form-control" id="ticket_description" name="ticket_description" placeholder="Enter Ticket Description" rows="4" cols="50" required>' . htmlspecialchars($row['ticket_description']) . '</textarea>
+								</div>
+								<div class="form-group">
+									<label for="ticket_priority">Ticket Priority:</label>
+									<select class="form-control" id="ticket_priority" name="ticket_priority" required>
+										<option value="Normal"' . (($row['ticket_priority'] === 'Normal') ? ' selected' : '') . '>Normal</option>
+										<option value="Priority"' . (($row['ticket_priority'] === 'Priority') ? ' selected' : '') . '>Priority</option>
+										<option value="Urgent"' . (($row['ticket_priority'] === 'Urgent') ? ' selected' : '') . '>Urgent</option>
+									</select>
+								</div>
+								<select class="form-control" id="admin_id" name="admin_id" required>
+												<option value="null">Anyone</option>';
+
+			// Append options for admin_id
+			$sql_admin = "SELECT * FROM admin_user";
+			$result_admin = $conn->query($sql_admin);
+			while ($admin = $result_admin->fetch_array()) {
+					$html .= '<option value="' . htmlspecialchars($admin['admin_fullname']) . '"> ' . htmlspecialchars($admin['admin_fullname']) . '</option>';
+			}
+		
+			// Complete the HTML string
+			$html .= '</select>
+								<!-- Add a hidden input field to submit the form with the button click -->
+								<input type="hidden" name="add_tickets" value="1">
+								<div class="modal-footer">
+									<button type="submit" class="btn btn-primary">Save</button>
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			';
+
+			// Return the HTML string
+			return $html;
+
 		}
 	),
 );
@@ -145,29 +243,31 @@ $sql_details = array(
 
 $user_id = $_SESSION['user_id'];
 // Include the SSP class
-require('../../../assets/datatables/ssp.class_with_where.php');
+require('../../../assets/datatables/ssp.class.php');
 
-$where = "user_id = '$user_id' AND ticket_status = 'Pending'";
 
-// Fetch and encode data for DataTables
-echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $where));
+$where = "user_id = $user_id AND ticket_status = 'Pending'";
 
-function getAdminFullname($admin_id)
-{
-    include '../../../connections/connections.php';
+$joinQuery = "FROM $table LEFT JOIN admin_user ON $table.admin_id = admin_user.admin_id";
 
-    // Your SQL query to get admin_fullname from admin_user
-    $query = "SELECT admin_fullname FROM admin_user WHERE admin_id = '$admin_id'";
+// Fetch and encode data for DataTables with the filter
+echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where));
 
-    // Assume $result contains the fetched result
-    $result = $conn->query($query);
-    $row = $result->fetch_assoc();
+// function getAdminFullname($admin_id)
+// {
+//     include '../../../connections/connections.php';
 
-    // Close the database connection
-    $conn->close();
+//     // Your SQL query to get admin_fullname from admin_user
+//     $query = "SELECT admin_fullname FROM admin_user WHERE admin_id = '$admin_id'";
 
-    return ($row !== null) ? $row['admin_fullname'] : "Anyone";
-}
+//     // Assume $result contains the fetched result
+//     $result = $conn->query($query);
+//     $row = $result->fetch_assoc();
 
+//     // Close the database connection
+//     $conn->close();
+
+//     return ($row !== null) ? $row['admin_fullname'] : "Anyone";
+// }
 
 ?>

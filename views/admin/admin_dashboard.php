@@ -60,7 +60,7 @@ if (!isset($_SESSION['admin_id'])) {
         </div>
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <div id="clockAndDate" class="h5 mb-0 font-weight-bold text-gray-800"></div>
+            <div id="clockAndDate" class="h1 mb-0 font-weight-bold text-gray-800"></div>
         </div>
 
           <!-- Content Row -->
@@ -208,7 +208,6 @@ if (!isset($_SESSION['admin_id'])) {
 
 </html>
 
-<!-- Running Clock Script -->
 <!-- Running Clock Script -->
 <script>
   function updateClockAndDate() {
