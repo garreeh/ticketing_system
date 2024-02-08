@@ -142,7 +142,9 @@ if (!isset($_SESSION['user_id'])) {
       "pagingType": "numbers",
       "processing": true,
       "serverSide": true,
-      "ajax": "./../../controllers/tables/users/closed_ticket_table.php"
+      "ajax": "./../../controllers/tables/users/closed_ticket_table.php",
+      "order": [[6, 'desc']], // Set the initial order to descending for the first column (index 0)
+
     });
   });
 </script>

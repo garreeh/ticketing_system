@@ -33,6 +33,8 @@ if (!isset($_SESSION['user_id'])) {
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">
   <link href="./../../assets/admin/css/sb-admin-2.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
 </head>
 
 <body id="page-top">
@@ -44,75 +46,7 @@ if (!isset($_SESSION['user_id'])) {
     <!-- End of Sidebar -->
 
     <!-- MODAL ADD TICKET -->
-    <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addItemModalLabel">Add Ticket</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-
-          <div class="modal-body">
-
-            <form method="post" enctype="multipart/form-data">
-              <div class="form-group">
-                <label for="ticket_category">Ticket Category:</label>
-                <select class="form-control" id="ticket_category" name="ticket_category" required>
-                  <?php
-
-                  $sql = "SELECT * FROM ticket_category";
-                  $result = $conn->query($sql);
-                  while ($row = $result->fetch_array()) {
-                    echo "<option value=\"" . htmlspecialchars($row['ticket_category']) . "\"> " . htmlspecialchars($row['ticket_category']) . "</option>";
-                  }
-                  ?>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="ticket_description">Ticket Description:</label>
-                <textarea class="form-control" id="ticket_description" name="ticket_description"
-                  placeholder="Enter Ticket Description" rows="4" cols="50" required></textarea>
-              </div>
-
-              <div class="form-group">
-                <label for="ticket_priority">Ticket Priority:</label>
-                <select class="form-control" id="ticket_priority" name="ticket_priority" required>
-                  <option value="Normal">Normal</option>
-                  <option value="Priority">Priority</option>
-                  <option value="Urgent">Urgent</option>
-                </select>
-              </div>
-
-              <select class="form-control" id="admin_id" name="admin_id" required>
-                <option value="null">Anyone</option>
-                <?php
-                $sql = "SELECT * FROM admin_user";
-                $result = $conn->query($sql);
-
-                while ($row = $result->fetch_array()) {
-                  echo "<option value=\"" . htmlspecialchars($row['admin_fullname']) . "\"> " . htmlspecialchars($row['admin_fullname']) . "</option>";
-                }
-                ?>
-              </select>
-
-
-              <!-- Add a hidden input field to submit the form with the button click -->
-              <input type="hidden" name="add_tickets" value="1">
-
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Add</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
-            </form>
-          </div>
-
-        </div>
-      </div>
-    </div>
+    <?php include './../../modal/add_ticket_modal.php'; ?>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -130,7 +64,7 @@ if (!isset($_SESSION['user_id'])) {
             <h1 class="h3 mb-0 text-gray-800">My Tickets</h1>
           </div>
           <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4" data-toggle="modal"
-            data-target="#addItemModal"> <i class="fas fa-plus"></i> Issue Ticket</a>
+            data-target="#addTicketModal"> <i class="fas fa-plus"></i> Issue Ticket</a>
           <a href="./../../excels/users_tickets_export.php"
             class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4"><i class="fas fa-file-excel"></i>
             Export Excel</a>
@@ -185,6 +119,7 @@ if (!isset($_SESSION['user_id'])) {
   <!-- Data tables -->
   <link rel="stylesheet" type="text/css" href="./../../assets/datatables/datatables.min.css" />
   <script type="text/javascript" src="./../../assets/datatables/datatables.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 </body>
 
@@ -196,7 +131,11 @@ if (!isset($_SESSION['user_id'])) {
       "pagingType": "numbers",
       "processing": true,
       "serverSide": true,
-      "ajax": "./../../controllers/tables/users/view_tickets_table.php"
+      "ajax": "./../../controllers/tables/users/view_tickets_table.php",
+      "order": [[6, 'desc']], // Set the initial order to descending for the first column (index 0)
+      "oLanguage": {
+        "sInfoFiltered": "", // Hide the filtered in (Showing X to X of X entries)
+      }
     });
   });
 </script>

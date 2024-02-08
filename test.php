@@ -1,37 +1,61 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal with Toastify</title>
+    <!-- Include Toastify Library -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- Include Bootstrap (for modal functionality) -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
 
-include './connections/connections.php';
+<!-- Button to open the modal -->
+<button id="openModalBtn">Open Modal</button>
 
-// Assume $current_category holds the current category value
-$current_category = "current_category";
-
-$sql = "SELECT * FROM ticket_category ";
-$result = $conn->query($sql);
-
-$html .= '<select class="form-control" id="ticket_category" name="ticket_category" required>';
-
-while ($category = $result->fetch_assoc()) {
-    $category_name = htmlspecialchars($category['ticket_category']);
-    $selected = ($category_name == $current_category) ? 'selected' : '';
-    $html .= '<option value="' . $category_name . '" ' . $selected . '> ' . $category_name . '</option>';
-}
-
-$html .= '</select>';
-
-// Output the generated HTML
-echo $html;
-?>
-
-
-<div class="form-group">
-    <label for="ticket_description">Ticket Description:</label>
-    <textarea class="form-control" id="ticket_description" name="ticket_description" placeholder="Enter Ticket Description" rows="4" cols="50" required>' . htmlspecialchars($row['ticket_description']) . '</textarea>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Example Modal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Button to trigger Toastify inside the modal -->
+                <button id="triggerToastBtn">Trigger Toastify</button>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="form-group">
-    <label for="ticket_priority">Ticket Priority:</label>
-    <select class="form-control" id="ticket_priority" name="ticket_priority" required>
-        <option value="Normal" <?php if ($row['ticket_priority'] === 'Normal') echo 'selected'; ?>>Normal</option>
-        <option value="Priority" <?php if ($row['ticket_priority'] === 'Priority') echo 'selected'; ?>>Priority</option>
-        <option value="Urgent" <?php if ($row['ticket_priority'] === 'Urgent') echo 'selected'; ?>>Urgent</option>
-    </select>
-</div>
+
+<script>
+    // Initialize Toastify
+    var toast = Toastify({
+        text: "This is a Toastify notification!",
+        duration: 3000,
+        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)"
+    });
+
+    // Function to open modal
+    document.getElementById("openModalBtn").addEventListener("click", function() {
+        $("#exampleModal").modal("show");
+    });
+
+    // Function to trigger Toastify inside modal
+    document.getElementById("triggerToastBtn").addEventListener("click", function() {
+        // Close the modal
+        $("#exampleModal").modal("hide");
+        
+        // Show Toastify notification
+        toast.showToast();
+    });
+</script>
+
+</body>
+</html>

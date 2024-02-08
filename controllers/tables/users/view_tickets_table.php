@@ -26,39 +26,62 @@ $columns = array(
 	),
 
 	array(
-		'db' => 'ticket_description',
-		'dt' => 2,
-		'field' => 'ticket_description',
-		'formatter' => function ($lab4, $row) {
-			// Generate a unique ID for the modal based on ticket_id
-			$modalId = 'ticket_description_modal_' . $row['ticket_id'];
+    'db' => 'ticket_description',
+    'dt' => 2,
+    'field' => 'ticket_description',
+    'formatter' => function ($lab4, $row) {
+        // Generate a unique ID for the modal based on ticket_id
+        $modalId = 'ticket_description_modal_' . $row['ticket_id'];
 
-			// Return the button and modal HTML
-			return '
-			<a href="#" class="view-ticket" data-toggle="modal" data-target="#' . $modalId . '">' . 'View' . '</a>
-			
-			<!-- Modal -->
-			<div class="modal fade" id="' . $modalId . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        // Return the button and modal HTML
+        return '
+        <a href="#" class="view-ticket" data-toggle="modal" data-target="#' . $modalId . '" data-ticket-id="' . $row['ticket_id'] . '">' . 'View' . '</a>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="' . $modalId . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog" role="document">
-							<div class="modal-content">
-									<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">Ticket Description</h5>
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-											</button>
-									</div>
-									<div class="modal-body">
-											<!-- Modal content goes here -->
-											<p>' . $row['ticket_description'] .'</p>
-									</div>
-									<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-									</div>
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">View Description</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
 							</div>
+							<div class="modal-body" id="modal-body-' . $row['ticket_id'] . '">
+								<!-- Modal content goes here -->
+								<p> Ticket Number: </p>
+								<input name="ticket_description" type="text" value="' . $row['ticket_number'] .'" class="form-control" readonly>
+								<hr>
+								<p> Description: </p>
+								<input id="description_' . $row['ticket_id'] . '" name="ticket_description" type="text" value="' . $row['ticket_description'] .'" class="form-control" readonly>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							</div>
+						</div>
 					</div>
-			</div>
-			';
-		}
+        </div>
+        
+        <script>
+					$(document).ready(function() {
+						$(document).on("click", ".view-ticket", function() {
+							var ticketId = $(this).data("ticket-id");
+							$.ajax({
+								url: "./../../controllers/users_view_description_process.php",
+								type: "GET",
+								data: { ticketId: ticketId },
+								success: function(response) {
+										$("#modal-body-" + ticketId).html(response);
+								},
+								error: function(xhr, status, error) {
+										console.error(xhr.responseText);
+								}
+							});
+						});
+					});
+        </script>
+        ';
+    }
 	),
 
 	array(
@@ -116,7 +139,6 @@ $columns = array(
     }
 	),
 
-
 	array(
     'db' => 'admin_user.admin_fullname',
     'dt' => 5,
@@ -129,7 +151,6 @@ $columns = array(
         }
     }
 	),
-
 
 	array(
 		'db' => 'tickets.created_at',
@@ -152,85 +173,142 @@ $columns = array(
 		'dt' => 7,
 		'field' => 'ticket_id',
 		'formatter' => function ($lab4, $row) {
-			include './../../../connections/connections.php';
+				include './../../../connections/connections.php';
 
-			$modalId = 'ticket_edit_modal_' . $row['ticket_id'];
+				$modalId = 'ticket_edit_modal_' . $row['ticket_id'];
 
-			// Start the HTML string
-			$html = '<a href="#" class="view-ticket btn btn-primary btn-sm" data-toggle="modal" data-target="#' . $modalId . '"><i class="fas fa-pencil-alt"></i> Edit</a>';
+				// Start the HTML string
+				$html = '<a href="#" class="edit-ticket btn btn-primary btn-sm" data-toggle="modal" data-target="#' . $modalId . '"><i class="fas fa-pencil-alt"></i> Edit</a>';
 
-			$html .= '<div class="modal fade" id="'. $modalId . '" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title" id="' . $modalId . '">Edit Ticket</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-											</div>
-											<div class="modal-body">
-												<form action="process_form.php" method="post" enctype="multipart/form-data">
-													<div class="form-group">
-														<label for="ticket_category">Ticket Category:</label>
-														<select class="form-control" id="ticket_category" name="ticket_category" required>';
+				$html .= '<div class="modal fade" id="'. $modalId . '" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel" aria-hidden="true">
+												<div class="modal-dialog" role="document">
+														<div class="modal-content">
+																<div class="modal-header">
+																		<h5 class="modal-title" id="' . $modalId . '">Edit Ticket</h5>
+																		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																				<span aria-hidden="true">&times;</span>
+																		</button>
+																</div>
+																<div class="modal-body">
+																		<form id="edit-ticket-form-' . $row['ticket_id'] . '" enctype="multipart/form-data">
+																				<div class="form-group">
+																						<input type="hidden" name="ticket_id" value="' . $row['ticket_id'] . '">
 
-														// Append the options using PHP loop
-														$sql = "SELECT * FROM ticket_category";
-														$result = $conn->query($sql);
-														$current_category = "ticket_category"; // Assuming you have the current category stored somewhere
-														
-														while ($category = $result->fetch_array()) {
-																$category_name = htmlspecialchars($category['ticket_category']);
-																$selected = ($category_name == $current_category) ? 'selected' : '';
-																$html .= '<option value="' . $category_name . '" ' . $selected . '> ' . $category_name . '</option>';
-														}
+																						<label for="ticket_category">Ticket Category:</label>
+																						<select class="form-control" id="ticket_category" name="ticket_category" required>';
 
-			// Continue with the HTML string
-			$html .= '</select>
-								</div>
-								<div class="form-group">
-									<label for="ticket_description">Ticket Description:</label>
-									<textarea class="form-control" id="ticket_description" name="ticket_description" placeholder="Enter Ticket Description" rows="4" cols="50" required>' . htmlspecialchars($row['ticket_description']) . '</textarea>
-								</div>
-								<div class="form-group">
-									<label for="ticket_priority">Ticket Priority:</label>
-									<select class="form-control" id="ticket_priority" name="ticket_priority" required>
-										<option value="Normal"' . (($row['ticket_priority'] === 'Normal') ? ' selected' : '') . '>Normal</option>
-										<option value="Priority"' . (($row['ticket_priority'] === 'Priority') ? ' selected' : '') . '>Priority</option>
-										<option value="Urgent"' . (($row['ticket_priority'] === 'Urgent') ? ' selected' : '') . '>Urgent</option>
-									</select>
-								</div>
-								<select class="form-control" id="admin_id" name="admin_id" required>
-												<option value="null">Anyone</option>';
+																						// Append the options using PHP loop
+																						$sql = "SELECT * FROM ticket_category";
+																						$result = $conn->query($sql);
 
-			// Append options for admin_id
-			$sql_admin = "SELECT * FROM admin_user";
-			$result_admin = $conn->query($sql_admin);
-			while ($admin = $result_admin->fetch_array()) {
-					$html .= '<option value="' . htmlspecialchars($admin['admin_fullname']) . '"> ' . htmlspecialchars($admin['admin_fullname']) . '</option>';
-			}
+																						while ($category = $result->fetch_array()) {
+																										$html .= '<option value="' . htmlspecialchars($category['ticket_category']) . '"' . (($row['ticket_category'] === $category['ticket_category']) ? ' selected' : '') . '>' . htmlspecialchars($category['ticket_category']) . '</option>';
+																						}
+
+																						$html .= '</select>
+																						</div>
+																						<div class="form-group">
+																								<label for="ticket_description">Ticket Description:</label>
+																								<textarea class="form-control" id="ticket_description" name="ticket_description" placeholder="Enter Ticket Description" rows="4" cols="50" required>' . htmlspecialchars($row['ticket_description']) . '</textarea>
+																						</div>
+																						<div class="form-group">
+																								<label for="ticket_priority">Ticket Priority:</label>
+																								<select class="form-control" id="ticket_priority" name="ticket_priority" required>
+																										<option value="Normal"' . (($row['ticket_priority'] === 'Normal') ? ' selected' : '') . '>Normal</option>
+																										<option value="Priority"' . (($row['ticket_priority'] === 'Priority') ? ' selected' : '') . '>Priority</option>
+																										<option value="Urgent"' . (($row['ticket_priority'] === 'Urgent') ? ' selected' : '') . '>Urgent</option>
+																								</select>
+																						</div>
+																						<select class="form-control" id="admin_id" name="admin_id" required>
+																								<option value="null" ' . (($row['admin_fullname'] === 'null') ? ' selected' : '') . '>Anyone</option>';
+
+																						// Append options for admin_id
+																						$sql_admin = "SELECT * FROM admin_user";
+																						$result_admin = $conn->query($sql_admin);
+																						while ($admin = $result_admin->fetch_array()) {
+																										$html .= '<option value="' . htmlspecialchars($admin['admin_fullname']) . '"' . (($row['admin_fullname'] === $admin['admin_fullname']) ? ' selected' : '') . '>' . htmlspecialchars($admin['admin_fullname']) . '</option>';
+																						}
+
+																						// Complete the HTML string
+																						$html .= '</select>
+																						<!-- Add a hidden input field to submit the form with the button click -->
+																						<input type="hidden" name="add_tickets" value="1">
+																						<div class="modal-footer">
+																								<button id="save-ticket-btn-' . $row['ticket_id'] . '" type="button" class="btn btn-primary">Save</button>
+																								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+																						</div>
+																		</form>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>'; // Close the modal content div
+
+				// Script for AJAX form submission
+				$html .= '
+				<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+				
+				<script>
+				function toastifyTicketUpdated(ticketId) {
+						var toast = Toastify({
+								text: "Ticket Updated Successfully " + ticketId + "!",
+								duration: 3000,
+								backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)"
+						});
+						toast.showToast();
+				}
 		
-			// Complete the HTML string
-			$html .= '</select>
-								<!-- Add a hidden input field to submit the form with the button click -->
-								<input type="hidden" name="add_tickets" value="1">
-								<div class="modal-footer">
-									<button type="submit" class="btn btn-primary">Save</button>
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			';
+				function submitForm(ticketId) {
+						var formData = $("#edit-ticket-form-" + ticketId).serialize(); // Serialize form data
+		
+						$.ajax({
+								type: "POST",
+								url: "./../../controllers/user_edit_ticket_process.php",
+								data: formData,
+								success: function(response) {
+										console.log("AJAX Success:", response); // Log the response for debugging
+										var data = JSON.parse(response); // Parse JSON response
+		
+										// Show Toastify notification based on response
+										if (data.success) {
+												toastifyTicketUpdated(ticketId);
+												var ticket = response.ticket;
+												document.getElementById("ticket_category").value = ticket.ticket_category;
+												document.getElementById("ticket_description").value = ticket.ticket_description;
+												document.getElementById("ticket_priority").value = ticket.ticket_priority;
+												document.getElementById("admin_id").value = ticket.admin_id;
+												if (data.close_modal) {
+														$("#ticket_edit_modal_" + ticketId).modal("hide"); // Close the modal after successful update
+												}
+										} else {
+												console.error("AJAX Error:", data.message); // Log error message for debugging
+										}
+								},
+								error: function(xhr, status, error) {
+										console.error("AJAX Error:", error); // Log error message for debugging
+								}
+						});
+				}
+		
+				// Function to handle form submission and show Toastify notification
+				function handleFormSubmission(ticketId) {
+						submitForm(ticketId);
+				}
+		
+				// Add event listener to the save button to handle form submission and close the modal
+				document.getElementById("save-ticket-btn-' . $row['ticket_id'] . '").addEventListener("click", function() {
+						handleFormSubmission(' . $row['ticket_id'] . ');
+						$("#ticket_edit_modal_' . $row['ticket_id'] . '").modal("hide"); // Close the modal after successful update
+				});
+		</script>
+		
+				';
 
-			// Return the HTML string
-			return $html;
-
+				// Return the HTML string
+				return $html;
 		}
 	),
+
 );
 
 // Database connection details
@@ -252,22 +330,5 @@ $joinQuery = "FROM $table LEFT JOIN admin_user ON $table.admin_id = admin_user.a
 
 // Fetch and encode data for DataTables with the filter
 echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where));
-
-// function getAdminFullname($admin_id)
-// {
-//     include '../../../connections/connections.php';
-
-//     // Your SQL query to get admin_fullname from admin_user
-//     $query = "SELECT admin_fullname FROM admin_user WHERE admin_id = '$admin_id'";
-
-//     // Assume $result contains the fetched result
-//     $result = $conn->query($query);
-//     $row = $result->fetch_assoc();
-
-//     // Close the database connection
-//     $conn->close();
-
-//     return ($row !== null) ? $row['admin_fullname'] : "Anyone";
-// }
 
 ?>
