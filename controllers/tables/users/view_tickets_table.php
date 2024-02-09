@@ -17,12 +17,12 @@ $columns = array(
 	),
 
 	array(
-		'db' => 'ticket_category',
-		'dt' => 1,
-		'field' => 'ticket_category',
-		'formatter' => function ($lab3, $row) {
-			return $row['ticket_category'];
-		}
+    'db' => 'ticket_category',
+    'dt' => 1,
+    'field' => 'ticket_category',
+    'formatter' => function ($lab3, $row) {
+				return $row['ticket_category']; // Return the original category if update failed
+    }
 	),
 
 	array(
@@ -61,25 +61,7 @@ $columns = array(
 						</div>
 					</div>
         </div>
-        
-        <script>
-					$(document).ready(function() {
-						$(document).on("click", ".view-ticket", function() {
-							var ticketId = $(this).data("ticket-id");
-							$.ajax({
-								url: "./../../controllers/users_view_description_process.php",
-								type: "GET",
-								data: { ticketId: ticketId },
-								success: function(response) {
-										$("#modal-body-" + ticketId).html(response);
-								},
-								error: function(xhr, status, error) {
-										console.error(xhr.responseText);
-								}
-							});
-						});
-					});
-        </script>
+		
         ';
     }
 	),
@@ -111,7 +93,6 @@ $columns = array(
 			return '<span style="display: inline-block; background-color: ' . $color . '; width: ' . $width . '; height: ' . $height . '; border-radius: ' . $border_radius . '; text-align: center; line-height: ' . $height . ';">' . $ticket_priority . '</span>';
     }
 ),
-
 
 	array(
     'db' => 'ticket_status',
@@ -251,7 +232,7 @@ $columns = array(
 				<script>
 				function toastifyTicketUpdated(ticketId) {
 						var toast = Toastify({
-								text: "Ticket Updated Successfully " + ticketId + "!",
+								text: "Ticket '. $row['ticket_number'].' Updated Successfully!",
 								duration: 3000,
 								backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)"
 						});
@@ -273,12 +254,14 @@ $columns = array(
 										if (data.success) {
 												toastifyTicketUpdated(ticketId);
 												var ticket = response.ticket;
-												document.getElementById("ticket_category").value = ticket.ticket_category;
-												document.getElementById("ticket_description").value = ticket.ticket_description;
-												document.getElementById("ticket_priority").value = ticket.ticket_priority;
-												document.getElementById("admin_id").value = ticket.admin_id;
+												document.getElementById("ticket_category").value = ticket_category;
+												document.getElementById("ticket_description").value = ticket_description;
+												document.getElementById("ticket_priority").value = ticket_priority;
+												document.getElementById("admin_id").value = admin_id;
+
 												if (data.close_modal) {
 														$("#ticket_edit_modal_" + ticketId).modal("hide"); // Close the modal after successful update
+														window.reloadDataTable();
 												}
 										} else {
 												console.error("AJAX Error:", data.message); // Log error message for debugging

@@ -63,6 +63,7 @@ if (!isset($_SESSION['user_id'])) {
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">My Tickets</h1>
           </div>
+
           <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4" data-toggle="modal"
             data-target="#addTicketModal"> <i class="fas fa-plus"></i> Issue Ticket</a>
           <a href="./../../excels/users_tickets_export.php"
@@ -127,7 +128,8 @@ if (!isset($_SESSION['user_id'])) {
 
 <script>
   $(document).ready(function () {
-    $('#view_tickets').dataTable({
+    // Initialize DataTable with an ID
+    var dataTable = $('#view_tickets').DataTable({
       "pagingType": "numbers",
       "processing": true,
       "serverSide": true,
@@ -137,5 +139,11 @@ if (!isset($_SESSION['user_id'])) {
         "sInfoFiltered": "", // Hide the filtered in (Showing X to X of X entries)
       }
     });
+
+    // Call reloadDataTable whenever the reload button is clicked
+    window.reloadDataTable = function() {
+      dataTable.ajax.reload();
+    };
   });
 </script>
+
