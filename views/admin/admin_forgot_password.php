@@ -1,84 +1,132 @@
 <?php
 include './../../connections/connections.php';
-include "../../controllers/forgot_password_process.php";
 
+if (session_status() == PHP_SESSION_NONE) {
+	session_start();
+}
+
+if (!isset($_SESSION['admin_id'])) {
+	header("Location: /ticketing_system/index.php");
+	exit();
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link href="./../../assets/img/favicon.ico" rel="icon">
+	<title>Ticket | Settings</title>
 
-  <title>Customer - Forgot Password</title>
+	<!-- Custom fonts for this template-->
+	<link href="./../../assets/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link
+		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+		rel="stylesheet">
 
-  <!-- Custom fonts for this template-->
-  <link href="../../assets/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link
-    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-    rel="stylesheet">
-
-  <!-- Custom styles for this template-->
-  <link href="../../assets/admin/css/sb-admin-2.min.css" rel="stylesheet">
-
+	<!-- Custom styles for this template-->
+	<link href="./../../assets/admin/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-gradient-primary">
-  <div class="container">
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
-      <div class="col-xl-10 col-lg-12 col-md-9">
-        <div class="card o-hidden border-0 shadow-lg my-5">
-          <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-              <div class="col-lg-6 d-none d-lg-block bg-password-image"></div>
-              <div class="col-lg-6">
-                <div class="p-5">
-                  <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-2">Forgot Your Password?</h1>
-                    <p class="mb-4">We get it, stuff happens. Just enter your email address below
-                      and we'll send you a link to reset your password!</p>
-                  </div>
-                  <form class="user" action="../../controllers/forgot_password_process.php" method="post">
-                    <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-                        aria-describedby="emailHelp" placeholder="Enter Email Address..." name="admin_email">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-user btn-block" name="reset_button">
-                      Reset Password
-                    </button>
-                  </form>
-                  <hr>
+<body id="page-top">
 
-                  <div class="text-center">
-                    <a class="small" href="/blut_medical/views/customer/customer_login_form.php">Already have an
-                      account? Login!</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<!-- Page Wrapper -->
+	<div id="wrapper">
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="../../assets/admin/vendor/jquery/jquery.min.js"></script>
-  <script src="../../assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- Sidebar -->
+		<?php include './../../includes/admin_navigation.php'; ?>
+		<!-- End of Sidebar -->
 
-  <!-- Core plugin JavaScript-->
-  <script src="../../assets/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+			<!-- Main Content -->
+			<div id="content">
+				<!-- Topbar -->
+				<?php include './../../includes/admin_topbar.php'; ?>
+				<!-- End of Topbar -->
 
-  <!-- Custom scripts for all pages-->
-  <script src="../../assets/admin/js/sb-admin-2.min.js"></script>
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">Settings</h1>
+					</div>
+
+					<!-- Content Row -->
+					<div class="row">
+
+						<!-- Active Tickets Card -->
+						<div class="container">
+							<div class="row justify-content-center">
+								<div class="col-xl-9 col-md-12">
+									<div class="card border-left-primary shadow h-100 py-2">
+										<div class="card-body">
+											<form action="change_password.php" method="post">
+												<div class="form-group">
+													<label for="currentPassword">Current Password</label>
+													<input type="password" class="form-control" id="currentPassword" name="currentPassword"
+														required>
+												</div>
+												<div class="form-group">
+													<label for="newPassword">New Password</label>
+													<input type="password" class="form-control" id="newPassword" name="newPassword" required>
+												</div>
+												<div class="form-group">
+													<label for="confirmPassword">Confirm New Password</label>
+													<input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+														required>
+												</div>
+												<button type="submit" class="btn btn-primary">Change Password</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- End of Main Content -->
+
+			<!-- Footer -->
+			<?php include './../../includes/footer.php'; ?>
+			<!-- End of Footer -->
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top">
+		<i class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="./../../assets/admin/vendor/jquery/jquery.min.js"></script>
+	<script src="./../../assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="./../../assets/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="./../../assets/admin/js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="./../../assets/admin/vendor/chart.js/Chart.min.js"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="./../../assets/admin/js/demo/chart-area-demo.js"></script>
+	<script src="./../../assets/admin/js/demo/chart-pie-demo.js"></script>
+
 </body>
 
 </html>

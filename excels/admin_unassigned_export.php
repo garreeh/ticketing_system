@@ -9,24 +9,23 @@ if (session_status() == PHP_SESSION_NONE) {
 	session_start();
 }
 // Excel file name for download 
-$fileName = "Closed Tickets " . date('F d, Y') . ".xlsx";
+$fileName = "Unassigned Tickets " . date('F d, Y') . ".xlsx";
 
 // Define column names 
-$excelData[] = array('Ticket Number', 'Ticket Category', 'Ticket Description', 'Ticket Priority', 'Ticket Status', 'Closed by', 'Date Created');
+$excelData[] = array('Client Fullname', 'Ticket Number', 'Category', 'Description', 'Priority', 'Status', 'Date Created');
 
-$user_id = $_SESSION['user_id'];
+$admin_id = $_SESSION['admin_id'];
 // Fetch records from database and store in an array 
-$query = $conn->query("SELECT * 
-FROM tickets 
-LEFT JOIN admin_user ON tickets.user_id = tickets.user_id
-WHERE tickets.user_id = '$user_id'
-AND ticket_status = 'Pending' 
+$query = $conn->query("SELECT *
+FROM tickets
+LEFT JOIN z_user ON tickets.user_id = z_user.user_id
+WHERE tickets.admin_id IS NULL
 ORDER BY ticket_id ASC");
-
 
 if ($query->num_rows > 0) {
 	while ($row = $query->fetch_assoc()) {
-		$lineData = array($row['ticket_number'], $row['ticket_category'], $row['ticket_description'], $row['ticket_priority'], $row['ticket_status'], $row['admin_fullname'], $row['created_at']);
+		$userfullname = $row['user_firstname'] . ' ' . $row['user_lastname'];
+		$lineData = array($userfullname, $row['ticket_number'], $row['ticket_category'], $row['ticket_description'], $row['ticket_priority'], $row['ticket_status'], $row['created_at']);
 		$excelData[] = $lineData;
 	}
 }

@@ -12,7 +12,7 @@
   $admin_id = 'admin_id';
 
 
-  $ticket_for_user = "SELECT * FROM `tickets` WHERE (admin_id = '$admin_id' OR admin_id IS NULL) AND (ticket_status = 'Pending' OR ticket_status = 'In Progress')";
+  $ticket_for_user = "SELECT * FROM `tickets` WHERE user_id = '$user_id'";
   $ticket_result_user = $conn->query($ticket_for_user);
 
   //Fetch all tickets

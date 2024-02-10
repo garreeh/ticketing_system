@@ -103,7 +103,7 @@ if (!isset($_SESSION['admin_id'])) {
     </div>
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-      <a class="nav-link" href="charts.html">
+      <a class="nav-link" href="/ticketing_system/views/admin/admin_forgot_password.php">
         <i class="fas fa-fw fa-cogs"></i>
         <span>Settings</span></a>
     </li>

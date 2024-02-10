@@ -84,8 +84,7 @@ if (!isset($_SESSION['admin_id'])) {
                   <table class="table custom-table table-hover" name="assigned_ticket" id="assigned_ticket">
                     <thead>
                       <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
+                        <th>Fullname</th>
                         <th>Ticket Number</th>
                         <th>Category</th>
                         <th>Description</th>
@@ -120,26 +119,6 @@ if (!isset($_SESSION['admin_id'])) {
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script src="./../../assets/admin/vendor/jquery/jquery.min.js"></script>
   <script src="./../../assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="./../../assets/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -155,21 +134,22 @@ if (!isset($_SESSION['admin_id'])) {
 
 <script>
   $(document).ready(function () {
-    $('#assigned_ticket').dataTable({
-      "pagingType": "numbers",
-      "processing": true,
-      "serverSide": true,
-      "ajax": "./../../controllers/tables/admin/assigned_tickets_table.php",
-      "oLanguage": {
-        "sInfoFiltered": "", // Hide the filtered in (Showing X to X of X entries)
-      },
-      columnDefs: [
-        {
-          target: 1,
-            visible: false,
-            searchable: false
-        },
-      ]
-    });
+      $('#assigned_ticket').dataTable({
+          "pagingType": "numbers",
+          "processing": true,
+          "serverSide": true,
+          "ajax": "./../../controllers/tables/admin/assigned_tickets_table.php",
+          "oLanguage": {
+              "sInfoFiltered": "", // Hide the filtered in (Showing X to X of X entries)
+          },
+          "order": [[6, "asc"]], // Set the default ordering to descending order on the first column
+          columnDefs: [
+              {
+                target: 1,
+                visible: false,
+                searchable: false
+              },
+          ]
+      });
   });
 </script>

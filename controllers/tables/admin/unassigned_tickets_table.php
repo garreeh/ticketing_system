@@ -13,7 +13,8 @@ $columns = array(
 		'dt' => 0,
 		'field' => 'user_firstname',
 		'formatter' => function ($lab1, $row) {
-			return $row['user_firstname'];
+			$userfullname = $row['user_firstname'] . ' ' . $row['user_lastname'];
+			return $userfullname;
 
 		}
 	),
@@ -50,23 +51,27 @@ $columns = array(
 			
 			<!-- Modal -->
 			<div class="modal fade" id="' . $modalId . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog" role="document">
-							<div class="modal-content">
-									<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">Ticket Description</h5>
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-											</button>
-									</div>
-									<div class="modal-body">
-											<!-- Modal content goes here -->
-											<p>' . $row['ticket_description'] .'</p>
-									</div>
-									<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-									</div>
-							</div>
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">View Description</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body" id="modal-body-' . $row['ticket_id'] . '">
+							<!-- Modal content goes here -->
+							<p> Ticket Number: </p>
+								<input name="ticket_description" type="text" value="' . $row['ticket_number'] .'" class="form-control" readonly>
+							<hr>
+							<p> Description: </p>
+								<textarea class="form-control" id="ticket_description" name="ticket_description" placeholder="Enter Ticket Description" rows="4" cols="50" readonly required>' . htmlspecialchars($row['ticket_description']) . '</textarea>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
 					</div>
+				</div>
 			</div>
 
 			';
@@ -174,13 +179,89 @@ $columns = array(
 	),
 
 	array(
-		'db' => 'ticket_id',
-		'dt' => 7,
-		'field' => 'ticket_id',
-		'formatter' => function ($lab4, $row) {
-			$ticket_id = $row['ticket_id'];
-			$edit_button = '<a href="/ticketing_system/controllers/admin_assign_ticket_process.php?ticket_id=' . $ticket_id . '" class="btn btn-primary btn-sm"> <i class="fas fa-pencil-alt"></i> Assign to me</a>';
-			return $edit_button;
+    'db' => 'ticket_id',
+    'dt' => 7,
+    'field' => 'ticket_id',
+    'formatter' => function ($lab4, $row) {
+        $ticket_id = $row['ticket_id'];
+        $edit_button = '<a href="#" class="btn btn-primary btn-sm assign-to-me-btn" id="assign-ticket-btn-' . $ticket_id . '"> <i class="fas fa-pencil-alt"></i> Assign to me</a>';
+
+				$edit_button .= '
+						<!-- Include Toastify and jQuery -->
+						<link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+						<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+						<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+				';
+
+        $edit_button .= '
+            <script>
+            $(document).ready(function() {
+                $("#assign-ticket-btn-' . $ticket_id . '").on("click", function(e) {
+                    e.preventDefault();
+                    var ticketId = ' . $ticket_id . ';
+
+                    // Serialize the data attribute containing the ticket ID
+                    var data = { ticket_id: ticketId };
+
+                    // Send AJAX request to the backend
+                    $.ajax({
+                        url: "/ticketing_system/controllers/admin_assign_ticket_process.php",
+                        type: "POST",
+                        data: data,
+                        success: function(response) {
+                            if (response === "success") {
+                                // Show success message using Toastify
+                                Toastify({
+                                    text: "Ticket '. $row['ticket_number'] .' assigned successfully!",
+                                    duration: 2000,
+                                    gravity: "top",
+                                    position: "right",
+                                    backgroundColor: "green"
+                                }).showToast();
+
+																window.reloadDataTable();
+
+                            } else {
+                                // Show error message using Toastify
+                                Toastify({
+                                    text: "Error assigning ticket. Please try again.",
+                                    duration: 2000,
+                                    gravity: "top",
+                                    position: "right",
+                                    backgroundColor: "red"
+                                }).showToast();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            // Show error message using Toastify
+                            Toastify({
+                                text: "Error assigning ticket: " + xhr.responseText,
+                                duration: 3000,
+                                close: true,
+                                gravity: "top",
+                                position: "right",
+                                backgroundColor: "red"
+                            }).showToast();
+                        }
+                    });
+                });
+            });
+            </script>
+        ';
+
+        return $edit_button;
+    }
+),
+
+
+
+	array(
+		'db' => 'z_user.user_lastname',
+		'dt' => 8,
+		'field' => 'user_lastname',
+		'formatter' => function ($lab1, $row) {
+			return $row['user_lastname'];
+
 		}
 	),
 );

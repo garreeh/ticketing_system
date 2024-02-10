@@ -44,6 +44,8 @@
             </select>
           </div>
 
+          <div class="form-group">
+          <label for="ticket_assignment">Assign to:</label>
           <select class="form-control" id="adminID" name="admin_id" required>
             <option value="null">Anyone</option>
             <?php
@@ -55,6 +57,7 @@
               }
             ?>
           </select>
+          </div>
 
           <!-- Add a hidden input field to submit the form with the button click -->
           <input type="hidden" name="add_tickets" value="1">
@@ -97,7 +100,7 @@
           if (response.success) {
             Toastify({
               text: response.message,
-              duration: 3000,
+              duration: 2000,
               backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)"
             }).showToast();
             
@@ -113,7 +116,7 @@
           } else {
             Toastify({
               text: response.message,
-              duration: 3000,
+              duration: 2000,
               backgroundColor: "linear-gradient(to right, #ff6a00, #ee0979)"
             }).showToast();
           }
@@ -123,7 +126,7 @@
           console.error(xhr.responseText);
           Toastify({
             text: "Error occurred while adding ticket. Please try again later.",
-            duration: 3000,
+            duration: 2000,
             backgroundColor: "linear-gradient(to right, #ff6a00, #ee0979)"
           }).showToast();
         }

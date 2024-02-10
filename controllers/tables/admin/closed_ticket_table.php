@@ -54,24 +54,29 @@ $columns = array(
 			
 			<!-- Modal -->
 			<div class="modal fade" id="' . $modalId . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog" role="document">
-							<div class="modal-content">
-									<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">Ticket Description</h5>
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-											</button>
-									</div>
-									<div class="modal-body">
-											<!-- Modal content goes here -->
-											<p>' . $row['ticket_description'] .'</p>
-									</div>
-									<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-									</div>
-							</div>
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">View Description</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body" id="modal-body-' . $row['ticket_id'] . '">
+							<!-- Modal content goes here -->
+							<p> Ticket Number: </p>
+								<input name="ticket_description" type="text" value="' . $row['ticket_number'] .'" class="form-control" readonly>
+							<hr>
+							<p> Description: </p>
+								<textarea class="form-control" id="ticket_description" name="ticket_description" placeholder="Enter Ticket Description" rows="4" cols="50" readonly required>' . htmlspecialchars($row['ticket_description']) . '</textarea>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
 					</div>
+				</div>
 			</div>
+
 			';
     }
 	),

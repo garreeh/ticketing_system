@@ -13,23 +13,15 @@ $columns = array(
 		'field' =>'user_firstname',
 		'formatter' => function ($lab1, $row) {
 
-			return $row['user_firstname'];
-		}
-	),
+			$userfullname = $row['user_firstname'] . ' ' . $row['user_lastname'];
 
-	// For lastname of User
-	array(
-		'db' => 'z_user.user_lastname',
-		'dt' => 1,
-		'field' => 'user_lastname',
-		'formatter' => function ($lab2, $row) {
-				return $row['user_lastname'];
+			return $userfullname;
 		}
 	),
 
 	array(
 		'db' => 'ticket_number',
-		'dt' => 2,
+		'dt' => 1,
 		'field' => 'ticket_number',
 		'formatter' => function ($lab2, $row) {
 			return $row['ticket_number'];
@@ -38,7 +30,7 @@ $columns = array(
 
 	array(
 		'db' => 'ticket_category',
-		'dt' => 3,
+		'dt' => 2,
 		'field' => 'ticket_category',
 		'formatter' => function ($lab3, $row) {
 			return $row['ticket_category'];
@@ -47,7 +39,7 @@ $columns = array(
 
 	array(
     'db' => 'ticket_description',
-    'dt' => 4,
+    'dt' => 3,
     'field' => 'ticket_description',
     'formatter' => function ($lab4, $row) {
 			// Generate a unique ID for the modal based on ticket_id
@@ -59,32 +51,36 @@ $columns = array(
 			
 			<!-- Modal -->
 			<div class="modal fade" id="' . $modalId . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog" role="document">
-							<div class="modal-content">
-									<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">Ticket Description</h5>
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-											</button>
-									</div>
-									<div class="modal-body">
-											<!-- Modal content goes here -->
-											<p>' . $row['ticket_description'] .'</p>
-									</div>
-									<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-									</div>
-							</div>
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">View Description</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body" id="modal-body-' . $row['ticket_id'] . '">
+							<!-- Modal content goes here -->
+							<p> Ticket Number: </p>
+								<input name="ticket_description" type="text" value="' . $row['ticket_number'] .'" class="form-control" readonly>
+							<hr>
+							<p> Description: </p>
+								<textarea class="form-control" id="ticket_description" name="ticket_description" placeholder="Enter Ticket Description" rows="4" cols="50" readonly required>' . htmlspecialchars($row['ticket_description']) . '</textarea>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
 					</div>
+				</div>
 			</div>
+
 			';
     }
 	),
 
-
 	array(
     'db' => 'ticket_priority',
-    'dt' => 5,
+    'dt' => 4,
     'field' => 'ticket_priority',
     'formatter' => function ($lab5, $row) {
 			$ticket_priority = $row['ticket_priority'];
@@ -110,10 +106,9 @@ $columns = array(
     }
 	),
 
-
 	array(
     'db' => 'ticket_status',
-    'dt' => 6,
+    'dt' => 5,
     'field' => 'ticket_status',
     'formatter' => function ($lab6, $row) {
 			$ticket_status = $row['ticket_status'];
@@ -139,7 +134,7 @@ $columns = array(
 
 	array(
 		'db' => 'created_at',
-		'dt' => 7,
+		'dt' => 6,
 		'field' => 'created_at',
 		'formatter' => function ($lab3, $row) {
 			// Set the time zone to Asia/Manila
@@ -155,12 +150,22 @@ $columns = array(
 
 	array(
 		'db' => 'ticket_id',
-		'dt' => 8,
+		'dt' => 7,
 		'field' => 'ticket_id',
 		'formatter' => function ($lab4, $row) {
 			$ticket_id = $row['ticket_id'];
 			$edit_button = '<a href="/ticketing_system/controllers/admin_closed_ticket_process.php?ticket_id=' . $ticket_id . '" class="btn btn-primary btn-sm"> <i class="fas fa-pencil-alt"></i> Mark as done</a>';
 			return $edit_button;
+		}
+	),
+
+	array(
+		'db' => 'z_user.user_lastname',
+		'dt' => 8,
+		'field' =>'user_lastname',
+		'formatter' => function ($lab1, $row) {
+
+			return $row['user_lastname'];
 		}
 	),
 );

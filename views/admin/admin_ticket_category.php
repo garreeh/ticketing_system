@@ -103,7 +103,7 @@ if (!isset($_SESSION['admin_id'])) {
                   <table class="table custom-table table-hover" name="tickets_cat" id="tickets_cat">
                     <thead>
                       <tr>
-                        <th>Ticket ID</th>
+                        <th>Category ID</th>
                         <th>Ticket Category</th>
                         <th>Date Created</th>
                         <th>Manage</th>
@@ -133,26 +133,6 @@ if (!isset($_SESSION['admin_id'])) {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <script src="./../../assets/admin/vendor/jquery/jquery.min.js"></script>
   <script src="./../../assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

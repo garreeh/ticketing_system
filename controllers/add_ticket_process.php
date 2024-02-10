@@ -61,12 +61,12 @@ VALUES ('$user_id', " . ($admin_id !== null ? "'$admin_id'" : 'NULL') . ", '$tic
         // Execute SQL query
         if (mysqli_query($conn, $sql)) {
             // Ticket added successfully
-            $response = array('success' => true, 'message' => 'Ticket added successfully');
+            $response = array('success' => true, 'message' => 'Ticket Added successfully!');
             echo json_encode($response);
             exit();
         } else {
             // Error adding ticket
-            $response = array('success' => false, 'message' => 'Error adding ticket: ' . mysqli_error($conn));
+            $response = array('success' => false, 'message' => 'Error Adding Ticket!: ' . mysqli_error($conn));
             echo json_encode($response);
             exit();
         }

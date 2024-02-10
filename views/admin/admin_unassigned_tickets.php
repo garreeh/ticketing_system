@@ -39,21 +39,6 @@ if (!isset($_SESSION['admin_id'])) {
     <?php include './../../includes/admin_navigation.php'; ?>
     <!-- End of Sidebar -->
 
-    <!-- MODAL ADD TICKET -->
-    <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addItemModalLabel">Add Ticket</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
       <!-- Main Content -->
@@ -70,7 +55,7 @@ if (!isset($_SESSION['admin_id'])) {
             <h1 class="h3 mb-0 text-gray-800">Unassigned Tickets</h1>
           </div>
 
-          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4"><i class="fas fa-file-excel"></i> Export Excel</a>
+          <a href="./../../excels/admin_unassigned_export.php"" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4"><i class="fas fa-file-excel"></i> Export Excel</a>
 
           <div class="row">
             <div class="col-xl-12 col-lg-12">
@@ -79,7 +64,7 @@ if (!isset($_SESSION['admin_id'])) {
                   <table class="table custom-table table-hover" name="unassigned_ticket" id="unassigned_ticket">
                     <thead>
                       <tr>
-                        <th>Name</th>
+                        <th>Fullname</th>
                         <th>Ticket Number</th>
                         <th>Category</th>
                         <th>Description</th>
@@ -130,14 +115,21 @@ if (!isset($_SESSION['admin_id'])) {
 
 <script>
   $(document).ready(function() {
-    $('#unassigned_ticket').dataTable({
+    var unassignedTicket = $('#unassigned_ticket').DataTable({
       "pagingType": "numbers",
       "processing": true,
       "serverSide": true,
       "ajax": "./../../controllers/tables/admin/unassigned_tickets_table.php",
+      "order": [[6, "asc"]], // Set the default ordering to descending order on the first column
       "oLanguage": {
         "sInfoFiltered": "", // Hide the filtered in (Showing X to X of X entries)
       }
     });
+
+    window.reloadDataTable = function() {
+      unassignedTicket.ajax.reload();
+    };
+
   });
+
 </script>

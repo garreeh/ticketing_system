@@ -1,6 +1,5 @@
 <?php
 include './../../connections/connections.php';
-include './../../controllers/add_ticket_process.php';
 
 if (session_status() == PHP_SESSION_NONE) {
 	session_start();

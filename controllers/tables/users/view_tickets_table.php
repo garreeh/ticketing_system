@@ -50,10 +50,10 @@ $columns = array(
 							<div class="modal-body" id="modal-body-' . $row['ticket_id'] . '">
 								<!-- Modal content goes here -->
 								<p> Ticket Number: </p>
-								<input name="ticket_description" type="text" value="' . $row['ticket_number'] .'" class="form-control" readonly>
+									<input name="ticket_description" type="text" value="' . $row['ticket_number'] .'" class="form-control" readonly>
 								<hr>
 								<p> Description: </p>
-								<input id="description_' . $row['ticket_id'] . '" name="ticket_description" type="text" value="' . $row['ticket_description'] .'" class="form-control" readonly>
+									<textarea class="form-control" id="ticket_description" name="ticket_description" placeholder="Enter Ticket Description" rows="4" cols="50" readonly required>' . htmlspecialchars($row['ticket_description']) . '</textarea>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -200,18 +200,23 @@ $columns = array(
 																										<option value="Urgent"' . (($row['ticket_priority'] === 'Urgent') ? ' selected' : '') . '>Urgent</option>
 																								</select>
 																						</div>
-																						<select class="form-control" id="admin_id" name="admin_id" required>
-																								<option value="null" ' . (($row['admin_fullname'] === 'null') ? ' selected' : '') . '>Anyone</option>';
 
-																						// Append options for admin_id
-																						$sql_admin = "SELECT * FROM admin_user";
-																						$result_admin = $conn->query($sql_admin);
-																						while ($admin = $result_admin->fetch_array()) {
-																										$html .= '<option value="' . htmlspecialchars($admin['admin_fullname']) . '"' . (($row['admin_fullname'] === $admin['admin_fullname']) ? ' selected' : '') . '>' . htmlspecialchars($admin['admin_fullname']) . '</option>';
-																						}
+																						<div class="form-group">
+																							<label for="ticket_assignment">Assign to:</label>
+																							<select class="form-control" id="admin_id" name="admin_id" required>
+																									<option value="null" ' . (($row['admin_fullname'] === 'null') ? ' selected' : '') . '>Anyone</option>';
 
-																						// Complete the HTML string
-																						$html .= '</select>
+																							// Append options for admin_id
+																							$sql_admin = "SELECT * FROM admin_user";
+																							$result_admin = $conn->query($sql_admin);
+																							while ($admin = $result_admin->fetch_array()) {
+																											$html .= '<option value="' . htmlspecialchars($admin['admin_fullname']) . '"' . (($row['admin_fullname'] === $admin['admin_fullname']) ? ' selected' : '') . '>' . htmlspecialchars($admin['admin_fullname']) . '</option>';
+																							}
+
+																							// Complete the HTML string
+																							$html .= '</select>
+																						</div>
+
 																						<!-- Add a hidden input field to submit the form with the button click -->
 																						<input type="hidden" name="add_tickets" value="1">
 																						<div class="modal-footer">
@@ -233,7 +238,7 @@ $columns = array(
 				function toastifyTicketUpdated(ticketId) {
 						var toast = Toastify({
 								text: "Ticket '. $row['ticket_number'].' Updated Successfully!",
-								duration: 3000,
+								duration: 2000,
 								backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)"
 						});
 						toast.showToast();
