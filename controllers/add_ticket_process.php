@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include './../connections/connections.php';
 
 // Check if user is logged in
@@ -11,8 +12,6 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 if (isset($_POST['add_tickets'])) {
-
-
     // Get form data
     $ticket_category_id = $conn->real_escape_string($_POST['ticket_category']);
     $ticket_description = $conn->real_escape_string($_POST['ticket_description']);

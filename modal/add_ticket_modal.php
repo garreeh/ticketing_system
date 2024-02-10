@@ -106,6 +106,7 @@
             
             // Optionally, close the modal
             $('#addTicketModal').modal('hide');
+            window.reloadDataTable();
             
             // Optionally, reload the DataTable or update it with the new data
             // Example: $('#dataTable').DataTable().ajax.reload();

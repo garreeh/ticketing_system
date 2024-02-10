@@ -1,6 +1,6 @@
 <?php
 
-include '../../connection/connect.php';
+include '../../connection/connections.php';
 session_start();
 
 // Check if the user is an admin
