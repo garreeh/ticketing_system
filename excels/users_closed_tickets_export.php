@@ -14,12 +14,12 @@ $fileName = "Closed Tickets " . date('F d, Y') . ".xlsx";
 // Define column names 
 $excelData[] = array('Ticket Number', 'Ticket Category', 'Ticket Description', 'Ticket Priority', 'Ticket Status', 'Closed by', 'Date Created');
 
-$user_id = $_SESSION['user_id'];
+$emp_id = $_SESSION['emp_id'];
 // Fetch records from database and store in an array 
 $query = $conn->query("SELECT * 
 FROM tickets 
-LEFT JOIN admin_user ON tickets.user_id = tickets.user_id
-WHERE tickets.user_id = '$user_id'
+LEFT JOIN admin_user ON tickets.emp_id = tickets.emp_id
+WHERE tickets.emp_id = '$emp_id'
 AND ticket_status = 'Pending' 
 ORDER BY ticket_id ASC");
 

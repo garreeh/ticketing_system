@@ -9,13 +9,12 @@ $primaryKey = 'ticket_id';
 // Define columns for DataTables
 $columns = array(
 	array(
-		'db' => 'z_user.user_firstname',
+		'db' => 'emp_users.emp_firstname',
 		'dt' => 0,
-		'field' => 'user_firstname',
+		'field' => 'emp_firstname',
 		'formatter' => function ($lab1, $row) {
-			$userfullname = $row['user_firstname'] . ' ' . $row['user_lastname'];
+			$userfullname = $row['emp_firstname'] . ' ' . $row['emp_lastname'];
 			return $userfullname;
-
 		}
 	),
 
@@ -138,34 +137,6 @@ $columns = array(
 		'dt' => 6,
 		'field' => 'created_at',
 		'formatter' => function ($lab3, $row) {
-			// // Set the time zone to Asia/Manila
-			// $timezone = new DateTimeZone('Asia/Manila');
-
-			// // Create DateTime objects with the specified time zone
-			// $created_at = new DateTime($row['created_at'], $timezone);
-			// $current_time = new DateTime(null, $timezone);
-
-			// // Calculate the time difference
-			// $interval = $current_time->diff($created_at);
-
-			// // Format the time difference
-			// $formatted_time = '';
-
-			// if ($interval->y > 0) {
-			// 	$formatted_time = $interval->y . ' year' . ($interval->y > 1 ? 's' : '') . ' ago';
-			// } elseif ($interval->m > 0) {
-			// 	$formatted_time = $interval->m . ' month' . ($interval->m > 1 ? 's' : '') . ' ago';
-			// } elseif ($interval->d > 0) {
-			// 	$formatted_time = $interval->d . ' day' . ($interval->d > 1 ? 's' : '') . ' ago';
-			// } elseif ($interval->h > 0) {
-			// 	$formatted_time = $interval->h . ' hour' . ($interval->h > 1 ? 's' : '') . ' ago';
-			// } elseif ($interval->i > 0) {
-			// 	$formatted_time = $interval->i . ' minute' . ($interval->i > 1 ? 's' : '') . ' ago';
-			// } elseif ($interval->s > 0) {
-			// 	$formatted_time = $interval->s . ' second' . ($interval->s > 1 ? 's' : '') . ' ago';
-			// }
-
-			// return $formatted_time;
 
 			// Set the time zone to Asia/Manila
 			$timezone = new DateTimeZone('Asia/Manila');
@@ -182,85 +153,89 @@ $columns = array(
     'db' => 'ticket_id',
     'dt' => 7,
     'field' => 'ticket_id',
-    'formatter' => function ($lab4, $row) {
-        $ticket_id = $row['ticket_id'];
-        $edit_button = '<a href="#" class="btn btn-primary btn-sm assign-to-me-btn" id="assign-ticket-btn-' . $ticket_id . '"> <i class="fas fa-pencil-alt"></i> Assign to me</a>';
+		'formatter' => function ($lab4, $row) {
+			$ticket_id = $row['ticket_id'];
+			$edit_button = '<a href="#" class="btn btn-primary btn-sm assign-to-me-btn" id="assign-ticket-btn-' . $ticket_id . '"> <i class="fas fa-pencil-alt"></i> Assign to me</a>';
+	
+			$edit_button .= '
+							<link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+							<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+							<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	
+							<script>
+											function toastifyTicketAssigned(ticketId, position) {
+												var existingToast = document.querySelector(".toastify.toastify-top");
+												if (existingToast) {
+													existingToast.remove();
+												}
+												
+												var toast = Toastify({
+													text: "Ticket '. $row['ticket_number'].' Assigned Successfully!",
+													duration: 2000,
+													backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+													position: position,
+												});
+												toast.showToast();
+											}
+											
+											$(document).ready(function() {
+															$("#assign-ticket-btn-' . $ticket_id . '").on("click", function(e) {
+																			e.preventDefault();
+																			var ticketId = ' . $ticket_id . ';
+	
+																			// Serialize the data attribute containing the ticket ID
+																			var data = { ticket_id: ticketId };
+	
+																			// Send AJAX request to the backend
+																			$.ajax({
+																							url: "/ticketing_system/controllers/admin_assign_ticket_process.php",
+																							type: "POST",
+																							data: data,
+																							success: function(response) {
+																											if (response === "success") {
+																												toastifyTicketAssigned(ticketId);
+																												window.reloadDataTable();
+																											} else {
+																												// Show error message using Toastify
+																												Toastify({
+																																text: "Error assigning ticket. Please try again.",
+																																duration: 2000,
+																																gravity: "top",
+																																position: "right",
+																																backgroundColor: "red"
+																												}).showToast();
+																											}
+																							},
+																							error: function(xhr, status, error) {
+																											// Show error message using Toastify
+																											Toastify({
+																															text: "Error assigning ticket: " + xhr.responseText,
+																															duration: 3000,
+																															close: true,
+																															gravity: "top",
+																															position: "right",
+																															backgroundColor: "red"
+																											}).showToast();
+																							}
+																			});
+															});
+											});
+							</script>
+			';
+	
+			return $edit_button;
+	}
+	
 
-				$edit_button .= '
-						<!-- Include Toastify and jQuery -->
-						<link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
-						<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-						<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-				';
 
-        $edit_button .= '
-            <script>
-            $(document).ready(function() {
-                $("#assign-ticket-btn-' . $ticket_id . '").on("click", function(e) {
-                    e.preventDefault();
-                    var ticketId = ' . $ticket_id . ';
-
-                    // Serialize the data attribute containing the ticket ID
-                    var data = { ticket_id: ticketId };
-
-                    // Send AJAX request to the backend
-                    $.ajax({
-                        url: "/ticketing_system/controllers/admin_assign_ticket_process.php",
-                        type: "POST",
-                        data: data,
-                        success: function(response) {
-                            if (response === "success") {
-                                // Show success message using Toastify
-                                Toastify({
-                                    text: "Ticket '. $row['ticket_number'] .' assigned successfully!",
-                                    duration: 2000,
-                                    gravity: "top",
-                                    position: "right",
-                                    backgroundColor: "green"
-                                }).showToast();
-
-																window.reloadDataTable();
-
-                            } else {
-                                // Show error message using Toastify
-                                Toastify({
-                                    text: "Error assigning ticket. Please try again.",
-                                    duration: 2000,
-                                    gravity: "top",
-                                    position: "right",
-                                    backgroundColor: "red"
-                                }).showToast();
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            // Show error message using Toastify
-                            Toastify({
-                                text: "Error assigning ticket: " + xhr.responseText,
-                                duration: 3000,
-                                close: true,
-                                gravity: "top",
-                                position: "right",
-                                backgroundColor: "red"
-                            }).showToast();
-                        }
-                    });
-                });
-            });
-            </script>
-        ';
-
-        return $edit_button;
-    }
-),
-
-
+	),
 
 	array(
-		'db' => 'z_user.user_lastname',
+		'db' => 'emp_users.emp_lastname',
 		'dt' => 8,
-		'field' => 'user_lastname',
+		'field' => 'emp_lastname',
 		'formatter' => function ($lab1, $row) {
-			return $row['user_lastname'];
+			return $row['emp_lastname'];
 
 		}
 	),
@@ -281,12 +256,9 @@ require('../../../assets/datatables/ssp.class.php');
 
 $where = "admin_id IS NULL";
 
-$joinQuery = "FROM $table LEFT JOIN z_user ON $table.user_id = z_user.user_id";
+$joinQuery = "FROM $table LEFT JOIN emp_users ON $table.emp_id = emp_users.emp_id";
 
 // Fetch and encode data for DataTables with the filter
 echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where));
-
-
-
 
 ?>

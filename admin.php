@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 	session_start();
 }
 
-if (isset($_SESSION['user_id'])) {
+if (isset($_SESSION['emp_id'])) {
 	header("Location: /ticketing_system/views/users/users_dashboard.php");
 	exit();
 } else if (isset($_SESSION['admin_id'])) {

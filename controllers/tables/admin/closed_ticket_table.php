@@ -9,16 +9,14 @@ $primaryKey = 'ticket_id';
 // Define columns for DataTables
 $columns = array(
 	array(
-		'db' => 'user_id',
+		'db' => 'emp_users.emp_firstname',
 		'dt' => 0,
-		'field' => 'user_id',
+		'field' =>'emp_firstname',
 		'formatter' => function ($lab1, $row) {
-			$user_id = $row['user_id'];
 
-			// Fetch user_firstname from z_users based on user_id
-			$user_fullname = getUserFullname($user_id);
+			$userfullname = $row['emp_firstname'] . ' ' . $row['emp_lastname'];
 
-			return $user_fullname;
+			return $userfullname;
 		}
 	),
 
@@ -161,6 +159,16 @@ $columns = array(
 			return $edit_button;
 		}
 	),
+
+	array(
+		'db' => 'emp_users.emp_lastname',
+		'dt' => 8,
+		'field' =>'emp_lastname',
+		'formatter' => function ($lab1, $row) {
+
+			return $row['emp_lastname'];
+		}
+	),
 );
 
 // Database connection details
@@ -174,33 +182,17 @@ $sql_details = array(
 $admin_id = $_SESSION['admin_id'];
 
 // Include the SSP class
-require('../../../assets/datatables/ssp.class_with_where.php');
+require('../../../assets/datatables/ssp.class.php');
 
 date_default_timezone_set('Asia/Manila');
 
 $datetoday = date("Y-m-d");
 $where = "ticket_status = 'Closed' AND DATE(created_at) = '$datetoday'";
 
+$joinQuery = "FROM $table
+              LEFT JOIN emp_users ON $table.emp_id = emp_users.emp_id";
+
 // Fetch and encode data for DataTables
-echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $where));
-
-function getUserFullname($user_id)
-{
-
-	include '../../../connections/connections.php';
-	// Your SQL query to get user_firstname from z_users
-	$query = "SELECT user_firstname, user_lastname FROM z_user WHERE user_id = $user_id";
-
-	// Assume $result contains the fetched result
-	$result = $conn->query($query);
-	$row = $result->fetch_assoc();
-
-	// Close the database connection
-	$conn->close();
-
-	return ($row !== null) ? $row['user_firstname'] . ' ' . $row['user_lastname'] : null;
-
-}
-
+echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where));
 
 ?>

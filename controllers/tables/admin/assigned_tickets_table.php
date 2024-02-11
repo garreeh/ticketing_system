@@ -8,12 +8,12 @@ $primaryKey = 'ticket_id';
 // Define columns for DataTables
 $columns = array(
 	array(
-		'db' => 'z_user.user_firstname',
+		'db' => 'emp_users.emp_firstname',
 		'dt' => 0,
-		'field' =>'user_firstname',
+		'field' =>'emp_firstname',
 		'formatter' => function ($lab1, $row) {
 
-			$userfullname = $row['user_firstname'] . ' ' . $row['user_lastname'];
+			$userfullname = $row['emp_firstname'] . ' ' . $row['emp_lastname'];
 
 			return $userfullname;
 		}
@@ -154,18 +154,90 @@ $columns = array(
 		'field' => 'ticket_id',
 		'formatter' => function ($lab4, $row) {
 			$ticket_id = $row['ticket_id'];
-			$edit_button = '<a href="/ticketing_system/controllers/admin_closed_ticket_process.php?ticket_id=' . $ticket_id . '" class="btn btn-primary btn-sm"> <i class="fas fa-pencil-alt"></i> Mark as done</a>';
+			$edit_button = '<a " class="btn btn-primary btn-sm" id="finish-ticket-btn-' . $ticket_id . '"> <i class="fas fa-pencil-alt"></i> Mark as done</a>';
+			
+			$edit_button .= '
+			<!-- Include Toastify and jQuery -->
+			<link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+			<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+			';
+
+			$edit_button .= '
+			<script>
+
+			function toastifyTicketClosed(ticketId, position) {
+				var existingToast = document.querySelector(".toastify.toastify-top");
+				if (existingToast) {
+					existingToast.remove();
+				}
+				
+				var toast = Toastify({
+					text: "Ticket '. $row['ticket_number'].' Closed Successfully!",
+					duration: 2000,
+					backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+					position: position,
+				});
+				toast.showToast();
+			}
+
+			$(document).ready(function() {
+					$("#finish-ticket-btn-' . $ticket_id . '").on("click", function(e) {
+							e.preventDefault();
+							var ticketId = ' . $ticket_id . ';
+
+							// Serialize the data attribute containing the ticket ID
+							var data = { ticket_id: ticketId };
+
+							// Send AJAX request to the backend
+							$.ajax({
+									url: "/ticketing_system/controllers/admin_closed_ticket_process.php",
+									type: "POST",
+									data: data,
+									success: function(response) {
+											if (response === "success") {
+													toastifyTicketClosed(ticketId);
+													window.reloadDataTable();
+
+											} else {
+													// Show error message using Toastify
+													Toastify({
+															text: "Error assigning ticket. Please try again.",
+															duration: 2000,
+															gravity: "top",
+															position: "right",
+															backgroundColor: "red"
+													}).showToast();
+											}
+									},
+									error: function(xhr, status, error) {
+											// Show error message using Toastify
+											Toastify({
+													text: "Error assigning ticket: " + xhr.responseText,
+													duration: 3000,
+													close: true,
+													gravity: "top",
+													position: "right",
+													backgroundColor: "red"
+											}).showToast();
+									}
+							});
+					});
+			});
+			</script>
+			';
+			
 			return $edit_button;
 		}
 	),
 
 	array(
-		'db' => 'z_user.user_lastname',
+		'db' => 'emp_users.emp_lastname',
 		'dt' => 8,
-		'field' =>'user_lastname',
+		'field' =>'emp_lastname',
 		'formatter' => function ($lab1, $row) {
 
-			return $row['user_lastname'];
+			return $row['emp_lastname'];
 		}
 	),
 );
@@ -186,7 +258,7 @@ require('../../../assets/datatables/ssp.class.php');
 $where = "admin_id = '$admin_id' AND ticket_status = 'Pending'";
 
 $joinQuery = "FROM $table
-              LEFT JOIN z_user ON $table.user_id = z_user.user_id";
+              LEFT JOIN emp_users ON $table.emp_id = emp_users.emp_id";
 
 // Fetch and encode data for DataTables with the filter
 echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $where));

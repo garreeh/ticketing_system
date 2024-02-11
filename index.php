@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 	session_start();
 }
 
-if (isset($_SESSION['user_id'])) {
+if (isset($_SESSION['emp_id'])) {
 	header("Location: /ticketing_system/views/users/users_dashboard.php");
 	exit();
 } else if (isset($_SESSION['admin_id'])) {
@@ -114,7 +114,7 @@ if (isset($_SESSION['user_id'])) {
 										<div class="form-group">
 											<div class="input-group">
 												<input type="password" class="form-control form-control-user" placeholder="Password"
-													name="user_password" id="user_password" required>
+													name="emp_password" id="emp_password" required>
 												<div class="input-group-append">
 													<span class="input-group-text" id="togglePassword">
 														<i class="fa fa-eye" aria-hidden="true"></i>
@@ -171,7 +171,7 @@ if (isset($_SESSION['user_id'])) {
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
 		document.getElementById('togglePassword').addEventListener('click', function () {
-			var passwordInput = document.getElementById('user_password');
+			var passwordInput = document.getElementById('emp_password');
 			var type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
 			passwordInput.setAttribute('type', type);
 			var icon = document.querySelector('#togglePassword i');
@@ -200,20 +200,20 @@ if (isset($_SESSION['user_id'])) {
 	function submitForm() {
 		// Get form data
 		var usernameOrEmail = document.getElementById('username_or_email').value;
-		var user_password = document.getElementById('user_password').value;
+		var emp_password = document.getElementById('emp_password').value;
 
 		// Create a new FormData object
 		var formData = new FormData();
 		formData.append('username_or_email', usernameOrEmail);
-		formData.append('user_password', user_password);
+		formData.append('emp_password', emp_password);
 
 		// Create and configure an XMLHttpRequest object
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', './controllers/user_login_process.php', true);
 
 		xhr.onload = function () {
-
 			if (xhr.status === 200) {
+
 				var response = JSON.parse(xhr.responseText);
 				console.log(response)
 				if (response.success) {

@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['emp_id'])) {
   header("Location: /ticketing_system/index.php");
   exit();
 }
@@ -18,6 +18,6 @@ if (!isset($_SESSION['user_id'])) {
 
   <!-- Topbar Search -->
   <h1 class="h3 mb-0 text-gray-800">
-    <?php echo "User: ". $_SESSION['user_firstname'] . ' ' . $_SESSION['user_lastname']; ?>
+    <?php echo "User: ". $_SESSION['emp_firstname'] . ' ' . $_SESSION['emp_lastname']; ?>
   </h1>
 </nav>

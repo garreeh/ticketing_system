@@ -26,6 +26,10 @@ if (!isset($_SESSION['admin_id'])) {
 
   <title>Pendragon | Help Desk</title>
 
+  <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+
   <link href="./../../assets/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link href="./../../assets/admin/css/sb-admin-2.min.css" rel="stylesheet">
@@ -104,6 +108,7 @@ if (!isset($_SESSION['admin_id'])) {
   <script src="./../../assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="./../../assets/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="./../../assets/admin/js/sb-admin-2.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   <!-- Data tables -->
   <link rel="stylesheet" type="text/css" href="./../../assets/datatables/datatables.min.css" />

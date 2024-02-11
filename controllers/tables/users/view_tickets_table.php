@@ -307,12 +307,12 @@ $sql_details = array(
 	'host' => 'localhost',
 );
 
-$user_id = $_SESSION['user_id'];
+$emp_id = $_SESSION['emp_id'];
 // Include the SSP class
 require('../../../assets/datatables/ssp.class.php');
 
 
-$where = "user_id = $user_id AND ticket_status = 'Pending'";
+$where = "emp_id = $emp_id AND ticket_status = 'Pending'";
 
 $joinQuery = "FROM $table LEFT JOIN admin_user ON $table.admin_id = admin_user.admin_id";
 

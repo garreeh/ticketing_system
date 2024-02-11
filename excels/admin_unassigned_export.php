@@ -18,7 +18,7 @@ $admin_id = $_SESSION['admin_id'];
 // Fetch records from database and store in an array 
 $query = $conn->query("SELECT *
 FROM tickets
-LEFT JOIN z_user ON tickets.user_id = z_user.user_id
+LEFT JOIN emp_users ON tickets.emp_id = emp_users.emp_id
 WHERE tickets.admin_id IS NULL
 ORDER BY ticket_id ASC");
 

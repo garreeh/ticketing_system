@@ -174,11 +174,11 @@ $sql_details = array(
 	'host' => 'localhost',
 );
 
-$user_id = $_SESSION['user_id'];
+$emp_id = $_SESSION['emp_id'];
 // Include the SSP class
 require('../../../assets/datatables/ssp.class_with_where.php');
 
-$where = "user_id = '$user_id' AND ticket_status = 'Closed'";
+$where = "emp_id = '$emp_id' AND ticket_status = 'Closed'";
 
 // Fetch and encode data for DataTables
 echo json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $where));

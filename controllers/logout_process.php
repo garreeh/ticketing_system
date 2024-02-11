@@ -12,7 +12,7 @@ if (isset($_SESSION['admin_id'])) {
 }
 
 // Check if the user is a regular user
-if (isset($_SESSION['user_id'])) {
+if (isset($_SESSION['emp_id'])) {
     $_SESSION = array();
     session_destroy();
     header("Location: /ticketing_system/index.php");

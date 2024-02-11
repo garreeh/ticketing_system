@@ -4,12 +4,12 @@ session_start();
 include './../connections/connections.php';
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['emp_id'])) {
     header("Location: /ticketing_system/index.php");
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
+$emp_id = $_SESSION['emp_id'];
 
 if (isset($_POST['add_tickets'])) {
     // Get form data
@@ -55,8 +55,8 @@ if (isset($_POST['add_tickets'])) {
         $ticket_category = $category_row['ticket_category'];
 
         // Construct SQL query
-        $sql = "INSERT INTO `tickets` (user_id, admin_id, ticket_number, ticket_category, ticket_description, ticket_priority, ticket_status)
-VALUES ('$user_id', " . ($admin_id !== null ? "'$admin_id'" : 'NULL') . ", '$ticket_number', '$ticket_category', '$ticket_description', '$ticket_priority', '$ticket_status')";
+        $sql = "INSERT INTO `tickets` (emp_id, admin_id, ticket_number, ticket_category, ticket_description, ticket_priority, ticket_status)
+VALUES ('$emp_id', " . ($admin_id !== null ? "'$admin_id'" : 'NULL') . ", '$ticket_number', '$ticket_category', '$ticket_description', '$ticket_priority', '$ticket_status')";
 
         // Execute SQL query
         if (mysqli_query($conn, $sql)) {

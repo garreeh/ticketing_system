@@ -23,7 +23,9 @@ if (!isset($_SESSION['admin_id'])) {
   <meta name="author" content="">
 
   <title>Ticket | Dashboard</title>
-
+    <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Custom fonts for this template-->
   <link href="./../../assets/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link
@@ -178,11 +180,8 @@ if (!isset($_SESSION['admin_id'])) {
   <script src="./../../assets/admin/js/sb-admin-2.min.js"></script>
 
   <!-- Page level plugins -->
-  <script src="./../../assets/admin/vendor/chart.js/Chart.min.js"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="./../../assets/admin/js/demo/chart-area-demo.js"></script>
-  <script src="./../../assets/admin/js/demo/chart-pie-demo.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </body>
 

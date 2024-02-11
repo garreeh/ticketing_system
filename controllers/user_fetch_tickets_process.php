@@ -3,16 +3,16 @@
   include '../../connections/connections.php';
 
   // Check if user is logged in
-  if (!isset($_SESSION['user_id'])) {
+  if (!isset($_SESSION['emp_id'])) {
     header("Location: /ticketing_system/admin.php");
     exit();
   }
 
-  $user_id = $_SESSION['user_id'];
+  $emp_id = $_SESSION['emp_id'];
   $admin_id = 'admin_id';
 
 
-  $ticket_for_user = "SELECT * FROM `tickets` WHERE user_id = '$user_id'";
+  $ticket_for_user = "SELECT * FROM `tickets` WHERE emp_id = '$emp_id'";
   $ticket_result_user = $conn->query($ticket_for_user);
 
   //Fetch all tickets
