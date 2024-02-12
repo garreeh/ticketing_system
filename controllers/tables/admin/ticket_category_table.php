@@ -48,7 +48,49 @@ $columns = array(
     'field' => 'ticket_category_id',
     'formatter' => function ($lab4, $row) {
       $ticket_category_id = $row['ticket_category_id'];
-      $edit_button = '<a href="edit_ticket_category.php?ticket_category_id=' . $ticket_category_id . '" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i> Edit</a>';
+
+			$modalId = 'ticket_category_modal_' . $ticket_category_id;
+
+      $edit_button = '<a href="#" data-toggle="modal" data-target="#' . $modalId . '" class="btn btn-primary btn-sm view-ticket"><i class="fas fa-pencil-alt"></i> Edit</a>
+
+      <!-- MODAL ADD TICKET -->
+      <div class="modal fade" id="' . $modalId . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addItemModalLabel">Add Ticket Category</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+  
+            <div class="modal-body" id="modal-body-' . $ticket_category_id . '">
+  
+              <form method="post" enctype="multipart/form-data">
+  
+                <div class="form-group">
+                  <label for="ticket_category">Ticket Category:</label>
+                  <input type="text" class="form-control" id="ticket_category" name="ticket_category"
+                    placeholder="Enter Ticket Category" value="'. $row['ticket_category'] .'" required>
+                </div>
+  
+                <!-- Add a hidden input field to submit the form with the button click -->
+                <input type="hidden" name="add_tickets_category" value="1">
+  
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </form>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+
+      
+      ';
 
       return $edit_button;
     }
