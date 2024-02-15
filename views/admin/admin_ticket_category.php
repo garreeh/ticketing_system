@@ -141,7 +141,6 @@ if (!isset($_SESSION['admin_id'])) {
   <script src="./../../assets/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="./../../assets/admin/js/sb-admin-2.min.js"></script>
   
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" href="./../../assets/datatables/datatables.min.css" />
   <script type="text/javascript" src="./../../assets/datatables/datatables.min.js"></script>
 
@@ -151,11 +150,15 @@ if (!isset($_SESSION['admin_id'])) {
 
 <script>
   $(document).ready(function () {
-    $('#tickets_cat').dataTable({
+    var ticketCategory = $('#tickets_cat').DataTable({
       "pagingType": "numbers",
       "processing": true,
       "serverSide": true,
       "ajax": "./../../controllers/tables/admin/ticket_category_table.php"
     });
+
+    window.reloadDataTable = function() {
+      ticketCategory.ajax.reload();
+    };
   });
 </script>

@@ -55,7 +55,6 @@ $columns = array(
 
       <!-- MODAL ADD TICKET -->
       <div class="modal fade" id="' . $modalId . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -65,9 +64,10 @@ $columns = array(
               </button>
             </div>
   
-            <div class="modal-body" id="modal-body-' . $ticket_category_id . '">
+            <div class="modal-body">
   
-              <form method="post" enctype="multipart/form-data">
+              <form id="edit-category-form-' . $row['ticket_category_id'] . '"  method="post" enctype="multipart/form-data">
+                <input type="hidden" name="ticket_category_id" value="' . $row['ticket_category_id'] . '">
   
                 <div class="form-group">
                   <label for="ticket_category">Ticket Category:</label>
@@ -76,12 +76,13 @@ $columns = array(
                 </div>
   
                 <!-- Add a hidden input field to submit the form with the button click -->
-                <input type="hidden" name="add_tickets_category" value="1">
+                <input type="hidden" name="edit_ticket_category" value="1">
   
                 <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">Save</button>
+                  <button id="save-ticket-category-btn-' . $row['ticket_category_id'] . '" type="button" class="btn btn-primary">Save</button>
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
+                
               </form>
             </div>
   
@@ -89,6 +90,60 @@ $columns = array(
         </div>
       </div>
 
+      <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+      <script>
+      function toastifyTicketCategoryUpdated(ticketId) {
+          var toast = Toastify({
+            text: "Ticket Category Updated Successfully!",
+            duration: 2000,
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)"
+          });
+          toast.showToast();
+      }
+  
+      function submitForm(ticketId) {
+          var formData = $("#edit-category-form-" + ticketId).serialize(); // Serialize form data
+  
+          $.ajax({
+              type: "POST",
+              url: "./../../controllers/admin_edit_category_process.php",
+              data: formData,
+              success: function(response) {
+                  console.log("AJAX Success:", response); // Log the response for debugging
+                  var data = JSON.parse(response); // Parse JSON response
+  
+                  // Show Toastify notification based on response
+                  if (data.success) {
+                    toastifyTicketCategoryUpdated(ticketId);
+                      var ticket = response.ticket;
+                      document.getElementById("ticket_category").value = ticket_category;
+
+                      if (data.close_modal) {
+                          $("#ticket_category_modal_" + ticketId).modal("hide"); // Close the modal after successful update
+                          window.reloadDataTable();
+                      }
+                  } else {
+                      console.error("AJAX Error:", data.message); // Log error message for debugging
+                  }
+              },
+              error: function(xhr, status, error) {
+                  console.error("AJAX Error:", error); // Log error message for debugging
+              }
+          });
+      }
+  
+      // Function to handle form submission and show Toastify notification
+      function handleFormSubmission(ticketId) {
+          submitForm(ticketId);
+      }
+  
+      // Add event listener to the save button to handle form submission and close the modal
+      document.getElementById("save-ticket-category-btn-' . $row['ticket_category_id'] . '").addEventListener("click", function() {
+          handleFormSubmission(' . $row['ticket_category_id'] . ');
+          $("#ticket_category_modal_' . $row['ticket_category_id'] . '").modal("hide"); // Close the modal after successful update
+      });
+   </script>
       
       ';
 

@@ -76,7 +76,7 @@ if (!isset($_SESSION['admin_id'])) {
           </div>
           <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4" data-toggle="modal"
             data-target="#addItemModal"> <i class="fas fa-plus"></i> Issue Ticket</a> -->
-          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4"><i
+          <a href="./../../excels/admin_assigned_export.php" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4"><i
               class="fas fa-file-excel"></i> Export Excel</a>
 
           <div class="row">

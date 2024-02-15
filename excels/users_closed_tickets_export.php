@@ -16,13 +16,12 @@ $excelData[] = array('Ticket Number', 'Ticket Category', 'Ticket Description', '
 
 $emp_id = $_SESSION['emp_id'];
 // Fetch records from database and store in an array 
-$query = $conn->query("SELECT * 
-FROM tickets 
-LEFT JOIN admin_user ON tickets.emp_id = tickets.emp_id
-WHERE tickets.emp_id = '$emp_id'
-AND ticket_status = 'Pending' 
-ORDER BY ticket_id ASC");
-
+$query = $conn->query("SELECT tickets.*, emp_users.*, admin_user.admin_fullname 
+                       FROM tickets 
+                       LEFT JOIN emp_users ON tickets.emp_id = emp_users.emp_id 
+                       LEFT JOIN admin_user ON tickets.admin_id = admin_user.admin_id 
+                       WHERE tickets.emp_id = $emp_id AND ticket_status = 'Closed' 
+                       ORDER BY ticket_status ASC");
 
 if ($query->num_rows > 0) {
 	while ($row = $query->fetch_assoc()) {

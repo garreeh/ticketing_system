@@ -122,6 +122,9 @@ if (!isset($_SESSION['admin_id'])) {
       "processing": true,
       "serverSide": true,
       "ajax": "./../../controllers/tables/admin/closed_ticket_table.php",
+      "oLanguage": {
+        "sInfoFiltered": "", // Hide the filtered in (Showing X to X of X entries)
+      },
       "order": [[6, "desc"]], // Set the default ordering to descending order on the first column
     });
   });

@@ -187,7 +187,7 @@ require('../../../assets/datatables/ssp.class.php');
 date_default_timezone_set('Asia/Manila');
 
 $datetoday = date("Y-m-d");
-$where = "ticket_status = 'Closed' AND DATE(created_at) = '$datetoday'";
+$where = "ticket_status = 'Closed'";
 
 $joinQuery = "FROM $table
               LEFT JOIN emp_users ON $table.emp_id = emp_users.emp_id";

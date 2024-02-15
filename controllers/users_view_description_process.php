@@ -15,17 +15,17 @@ if(isset($_GET['ticketId']) && is_numeric($_GET['ticketId'])) {
 
   // Check if query was successful
   if($result) {
-      // Fetch ticket details
-      $ticket = mysqli_fetch_assoc($result);
+    // Fetch ticket details
+    $ticket = mysqli_fetch_assoc($result);
 
-      // Close the database connection
-      mysqli_close($conn);
+    // Close the database connection
+    mysqli_close($conn);
 
-      // Output ticket details as HTML
-      echo $ticket['ticket_description'];
+    // Output ticket details as HTML
+    echo $ticket['ticket_description'];
   } else {
-      // Query failed, output error message
-      echo "Error: " . mysqli_error($conn);
+    // Query failed, output error message
+    echo "Error: " . mysqli_error($conn);
   }
 } else {
   // Invalid or missing ticketId, output error message

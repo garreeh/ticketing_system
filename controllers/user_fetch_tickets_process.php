@@ -30,11 +30,11 @@
       $ticket_status = $row['ticket_status'];
 
       if ($ticket_priority == 'Normal') {
-          $normal_count++;
+        $normal_count++;
       } elseif ($ticket_priority == 'Priority') {
-          $priority_count++;
+        $priority_count++;
       } elseif ($ticket_priority == 'Urgent') {
-          $urgent_count++;
+        $urgent_count++;
       }
     }
   }

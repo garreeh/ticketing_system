@@ -24,7 +24,7 @@ ORDER BY ticket_id ASC");
 
 if ($query->num_rows > 0) {
 	while ($row = $query->fetch_assoc()) {
-		$userfullname = $row['user_firstname'] . ' ' . $row['user_lastname'];
+		$userfullname = $row['emp_firstname'] . $row['emp_lastname'];
 		$lineData = array($userfullname, $row['ticket_number'], $row['ticket_category'], $row['ticket_description'], $row['ticket_priority'], $row['ticket_status'], $row['created_at']);
 		$excelData[] = $lineData;
 	}

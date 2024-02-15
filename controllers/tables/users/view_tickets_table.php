@@ -258,7 +258,6 @@ $columns = array(
 										// Show Toastify notification based on response
 										if (data.success) {
 												toastifyTicketUpdated(ticketId);
-												var ticket = response.ticket;
 												document.getElementById("ticket_category").value = ticket_category;
 												document.getElementById("ticket_description").value = ticket_description;
 												document.getElementById("ticket_priority").value = ticket_priority;

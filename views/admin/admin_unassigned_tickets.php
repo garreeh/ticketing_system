@@ -59,7 +59,7 @@ if (!isset($_SESSION['admin_id'])) {
             <h1 class="h3 mb-0 text-gray-800">Unassigned Tickets</h1>
           </div>
 
-          <a href="./../../excels/admin_unassigned_export.php"" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4"><i class="fas fa-file-excel"></i> Export Excel</a>
+          <a href="./../../excels/admin_unassigned_export.php" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mb-4"><i class="fas fa-file-excel"></i> Export Excel</a>
 
           <div class="row">
             <div class="col-xl-12 col-lg-12">
