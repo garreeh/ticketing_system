@@ -9802,7 +9802,7 @@ a:focus {
   overflow-x: hidden;
 }
 
-#wrapper #content-wrapper #content {
+#wrapper #content-wrapper #main {
   flex: 1 0 auto;
 }
 
