@@ -125,6 +125,10 @@ if (!isset($_SESSION['emp_id'])) {
 </html>
 
 <script>
+  $('#sidebarToggle').click(function () {
+    $('#view_tickets').css('width', '100%');
+    // console.log(table) //This is for testing only
+  });
   $(document).ready(function () {
     // Initialize DataTable with an ID
     var dataTable = $('#view_tickets').DataTable({

@@ -116,6 +116,10 @@ if (!isset($_SESSION['admin_id'])) {
 </html>
 
 <script>
+  $('#sidebarToggle').click(function () {
+    $('#closed_ticket').css('width', '100%');
+    // console.log(table) //This is for testing only
+  });
   $(document).ready(function() {
     $('#closed_ticket').dataTable({
       "pagingType": "numbers",

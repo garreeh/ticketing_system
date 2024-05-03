@@ -119,6 +119,10 @@ if (!isset($_SESSION['admin_id'])) {
 </html>
 
 <script>
+  $('#sidebarToggle').click(function () {
+    $('#unassigned_ticket').css('width', '100%');
+    // console.log(table) //This is for testing only
+  });
   $(document).ready(function() {
     var unassignedTicket = $('#unassigned_ticket').DataTable({
       "pagingType": "numbers",

@@ -136,6 +136,10 @@ if (!isset($_SESSION['admin_id'])) {
 </html>
 
 <script>
+  $('#sidebarToggle').click(function () {
+    $('#assigned_ticket').css('width', '100%');
+    // console.log(table) //This is for testing only
+  });
   $(document).ready(function () {
     var assignedTicket = $('#assigned_ticket').DataTable({
           "pagingType": "numbers",

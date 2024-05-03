@@ -116,6 +116,11 @@ if (!isset($_SESSION['emp_id'])) {
 </html>
 
 <script>
+  $('#sidebarToggle').click(function () {
+    $('#closed_tickets_user').css('width', '100%');
+    // console.log(table) //This is for testing only
+  });
+  
   $(document).ready(function () {
     $('#closed_tickets_user').dataTable({
       "pagingType": "numbers",
